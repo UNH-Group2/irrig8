@@ -27,7 +27,7 @@
             2
         ],
         "linebreak-style": [
-            "error",
+            "warn",
             "unix"
         ],
         "quotes": [
@@ -37,7 +37,6 @@
         "semi": [
             "error",
             "always"
-        ],
-        "prettier/prettier": "error"
+        ]
     }
 }
