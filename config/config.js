@@ -1,9 +1,9 @@
-{
+module.exports = {
   "development": {
-    "username": "root",
-    "password": "jct286",
-    "database": "irrig8_db",
-    "host": "localhost",
+    "username": process.env.DB_USER,
+    "password": process.env.DB_PWD,
+    "database": process.env.DB_NAME,
+    "host": process.env.DB_HOST,
     "dialect": "mysql"
   },
   "test": {
@@ -18,5 +18,4 @@
     "use_env_variable": "JAWSDB_URL",
     "dialect": "mysql"
   }
-}
-
+};
