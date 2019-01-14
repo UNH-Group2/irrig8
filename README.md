@@ -2,13 +2,23 @@
   
 ## API Endpoints
   
-| User Table |    
-|HTTP Action | Endpoint |  Req Parms | Body Input | Body Output | Description |
-| ---------- | -------- | ------ | ----- | ------ | ----------- |
-| GET        | /api/user/:id | id | n/a |  { User } | Get the user details for one id |
-| POST       | /api/user     | n/a | { userName, password, OAuthToken }  |{ rowsAffected : # } | adds the passed user object to the database   |
-| PUT        | /api/user/:id | id | { userName, password, OAuthToken } | { rowsAffected : # } | updates state of the specified user in the database |
-| DELETE     | /api/user/:id | id | n/a | { rowsAffected : # } |  deletes the specified user from the database based on id |
+| User Endpoints -- requires authentication for access |   
+   
+|HTTP Action | Endpoint |  Req Parms | Body Input | Body Output | Description |  
+| ---------- | -------- | ------ | ----- | ------ | ----------- |  
+| GET        | /api/user/:id | id | n/a |  { User } | Get the user details for one id |  
+| POST       | /api/user     | n/a | { userName, password, OAuthToken }  |{ rowsAffected : # } | adds the passed user object to the database   |  
+| PUT        | /api/user/:id | id | { userName, password, OAuthToken } | { rowsAffected : # } | updates state of the specified user in the database |  
+| DELETE     | /api/user/:id | id | n/a | { rowsAffected : # } |  deletes the specified user from the database based on id |  
+
+| Authentication Endpoints |   
+   
+|HTTP Action | Endpoint |  Req Parms | Body Input | Body Output | Description |  
+| ---------- | -------- | ---------- | ---------- | ----------- | ----------- |  
+| GET        | /login   | n/a        | n/a        |  "index"    | redirects the browser to the login page |  
+| POST       | /login   | n/a        | { username, password }   | { user : id }   | authenticates the user and directs them to a landing page   |  
+| GET        | /logout  | id         | n/a        |  "index"    | de-identify the user and direct them to the login page |  
+| GET        | /profile | n/a        | n/a        | { user : id } |  redirects the user to the profile page passing the stored identiy |  
 
 ## How to install/run the application    
 1. Download and install the latest version of Node.js following the website instructions for your platform  
@@ -46,7 +56,14 @@ __Note:__  .env is added to the .gitignore file to prevent your config and passw
 | dotenv            | __6.2.0__   | Utility package to hide the secret keys in a .env file and away from git |  
 | sequelize         | __4.38.0__  | Object Relational mapper framework |  
 | jawsDB            |             | a mySql compatible relational datbase supported for Heroku remote deployments |   
-  
+| passport          | __0.4.0__   | authentication library for login management |
+| passport-local    | __1.0.0__   | authentication strategy for passport, simple id/password stored in session |
+| body-parser       | __1.18.3__  | Http reqest body parser used by passport | 
+| connect-ensure-login | __0.1.1__ | endpoint protection library to require authenticated users before giving access |
+| cookie-parser     | __1.4.3__   | Serializer used by passport for authentication |
+| morgan            | __1.9.1__   | Http request logging middleware used for passport |
+
+
 ## Authors   
 UNH LawnDogs      
 January, 2018   
