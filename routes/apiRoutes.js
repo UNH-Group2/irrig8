@@ -39,7 +39,6 @@ module.exports = function (app) {
   // CREATE - POST("/api/user") - add a new User to the user table, returns new user id 
   //                            - requires authenticated user to access
   app.post("/api/user/",
-    require("connect-ensure-login").ensureLoggedIn(),
     function (req, res) {
 
       console.log("post /api/user called");
