@@ -1,6 +1,15 @@
 # irrig8
   
+## API Endpoints
   
+| User Table |    
+|HTTP Action | Endpoint |  Req Parms | Body Input | Body Output | Description |
+| ---------- | -------- | ------ | ----- | ------ | ----------- |
+| GET        | /api/user/:id | id | n/a |  { User } | Get the user details for one id |
+| POST       | /api/user     | n/a | { userName, password, OAuthToken }  |{ rowsAffected : # } | adds the passed user object to the database   |
+| PUT        | /api/user/:id | id | { userName, password, OAuthToken } | { rowsAffected : # } | updates state of the specified user in the database |
+| DELETE     | /api/user/:id | id | n/a | { rowsAffected : # } |  deletes the specified user from the database based on id |
+
 ## How to install/run the application    
 1. Download and install the latest version of Node.js following the website instructions for your platform  
    ` https://nodejs.org/en/download/`   
