@@ -26,7 +26,7 @@ module.exports = function (app) {
   });
 
   app.put("/api/zone/off", function (req, res) {
-    rachioService.turnOnZone(req.body.zoneId).then(resp =>{
+    rachioService.turnOffZone(req.body.deviceId).then(resp =>{
       console.log(resp);
       res.json(resp);
     });

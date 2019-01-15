@@ -40,7 +40,7 @@ var getUserInfo = function (token, id) {
     json: true // Automatically parses the JSON string in the response
   };
 
-  return rp.put(options)
+  return rp.get(options)
     .then((resp) => {
       return resp;
     })
@@ -79,7 +79,7 @@ var turnOnZone = function (zoneId) {
     });
 };
 
-var turnOffZone = function (zoneId) {
+var turnOffZone = function (deviceId) {
   var options = {
     uri: "https://api.rach.io/1/public/device/stop_water",
     method: "PUT",
@@ -91,12 +91,12 @@ var turnOffZone = function (zoneId) {
       "bearer": "248886e0-f2c7-4206-9538-223153139ca4"
     },
     body: {
-      id: zoneId,
+      id: deviceId,
     },
     json: true // Automatically parses the JSON string in the response
   };
 
-  return rp.get(options)
+  return rp.put(options)
     .then((resp) => {
       return resp;
     })
