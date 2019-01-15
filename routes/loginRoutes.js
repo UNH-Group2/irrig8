@@ -23,7 +23,7 @@ module.exports = function (app) {
     }),
     function (req, res) {
       console.log("called endpoint - post /login");
-      res.render("example",{
+      res.render("example", {
         user: req.user
       }); // success! send them to a landing page
     });
@@ -50,5 +50,12 @@ module.exports = function (app) {
       });
     });
 
+  //--------------------
+  // GET ("/register") - redirect to a profile page for an unauthenticated user
+  app.get("/register",
+    function (req, res) {
+      console.log("called endpoint - get /register"),
+      res.render("profile");
+    });
 
 };

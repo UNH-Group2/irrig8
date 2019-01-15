@@ -11,6 +11,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER(3)
     },
 
+    rachioZoneId: {
+      type: DataTypes.STRING(50)
+    },
+
     imageURL: {
       type: DataTypes.STRING(255)
     }
