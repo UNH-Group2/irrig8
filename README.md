@@ -16,9 +16,10 @@
 |HTTP Action | Endpoint |  Req Parms | Body Input | Body Output | Description |  
 | ---------- | -------- | ---------- | ---------- | ----------- | ----------- |  
 | GET        | /login   | n/a        | n/a        |  "index"    | redirects the browser to the login page |  
-| POST       | /login   | n/a        | { username, password }   | { user : id }   | authenticates the user and directs them to a landing page   |  
+| GET        | /register| n/a        | n/a        | n/a         | redirects the unauthenticated user to the profile page to register a new user | 
+| GET        | /profile | n/a        | n/a        | { user : id } |  redirects the authenticated user to the profile page| POST       | /login   | n/a        | { username, password }   | { user : id }   | authenticates the user and directs them to a landing page   |  
 | GET        | /logout  | id         | n/a        |  "index"    | de-identify the user and direct them to the login page |  
-| GET        | /profile | n/a        | n/a        | { user : id } |  redirects the user to the profile page passing the stored identiy |  
+| GET        | /profile | n/a        | n/a        | { user : id } |  redirects the authenticated user to the profile page passing the stored identiy |  
 
 ## How to install/run the application    
 1. Download and install the latest version of Node.js following the website instructions for your platform  
