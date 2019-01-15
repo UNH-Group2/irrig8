@@ -18,11 +18,11 @@ module.exports = function (sequelize, DataTypes) {
     },
 
     locationLatitude: {
-      type: DataTypes.INTEGER(15)
+      type: DataTypes.DECIMAL(10,8)
     },
 
     locationLongitude: {
-      type: DataTypes.INTEGER(15)
+      type: DataTypes.DECIMAL(10,8)
     },
     
     rachioDeviceId: {
