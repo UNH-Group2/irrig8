@@ -1,32 +1,8 @@
 var db = require("../models");
+var rachioService = require("../services/rachioService");
+var userRepository = require("../repositories/userRepository");
 
 module.exports = function (app) {
-  // Get all examples
-  app.get("/api/examples", function (req, res) {
-    db.Example.findAll({}).then(function (dbExamples) {
-      res.json(dbExamples);
-    });
-  });
-
-  // Create a new example
-  app.post("/api/examples", function (req, res) {
-    db.Example.create(req.body).then(function (dbExample) {
-      res.json(dbExample);
-    });
-  });
-
-  // Delete an example by id
-  app.delete("/api/examples/:id", function (req, res) {
-    db.Example.destroy({
-      where: {
-        id: req.params.id
-      }
-    }).then(function (dbExample) {
-      res.json(dbExample);
-    });
-  });
-
-
   // --------------------------------------------------------------------------
   // User Profile Routes
   //     GET    /api/user/:id   - return one user from the database
@@ -43,21 +19,23 @@ module.exports = function (app) {
 
       console.log("post /api/user called");
 
-      db.User.create({
-        userName: req.body.userName,
-        password: req.body.password,
-        rachioOAuthToken: req.body.rachioOAuthToken
-      })
-        .then(function (userData) {
-          console.log("post /api/user success - id " + userData.id + " added to User table ");
-          return res.json({
-            id: userData.id
-          });
-
-        }).catch(function (err) {
-          console.log("Error returned from User.create() - could not complete insert request");
-          console.log(err);
-          return res.status(500).end();
+      rachioService.getUserId(req.body.rachioOAuthToken)
+        .then((resp) => {
+          rachioService.getUserInfo(req.body.rachioOAuthToken, resp.id)
+            .then((resp) => {
+              userRepository.saveUser(req.body.userName, req.body.password, req.body.rachioOAuthToken, resp)
+                .then((resp) => {
+                  console.log("post /api/user success - id " + resp.id + " added to User table ");
+                  // should send back the zone page with everything populated
+                  return res.json({
+                    id: resp.id
+                  });
+                }).catch(function (err) {
+                  console.log("Error returned from User.create() - could not complete insert request");
+                  console.log(err);
+                  return res.status(500).end();
+                });
+            });
         });
     });
 
@@ -142,5 +120,4 @@ module.exports = function (app) {
           return res.status(500).end();
         });
     });
-
 };
