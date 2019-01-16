@@ -8,7 +8,7 @@ module.exports = function (app) {
   });
 
   // Load zone page
-  app.get("/zones/:id", function (req, res) {
+  app.get("/zones", function (req, res) {
     res.render("zones");
   });
 
