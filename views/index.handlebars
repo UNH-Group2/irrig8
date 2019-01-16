@@ -10,18 +10,20 @@
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident consequuntur vero placeat nam impedit
           expedita quam accusantium voluptate, suscipit adipisci quaerat molestiae optio assumenda tempore laboriosam
           veritatis facilis laudantium rem?</p>
-        <form>
-          <div class="form-group">
-            <label for="Email">Email address</label>
-            <input type="email" class="form-control" id="homeEmail" placeholder="Enter email">
+        <form action="/login" method="post">
+          <div>
+            <label>Username:</label>
+            <input type="text" name="username" placeholder="your login name" />
           </div>
           <div class="form-group">
-            <label for="Password">Password</label>
-            <input type="password" class="form-control" id="homePassword" placeholder="Password">
+            <label>Password:</label>
+            <input type="password" name="password" placeholder="secret" />
           </div>
-          <button type="submit" class="btn btn-primary" id="login">Login</button>
-          <a href="/register" class="float-right" id="homeNewUser">New User?</a>
+          <div>
+            <input type="submit" class="btn btn-primary" value="Log In" />
+          </div>
         </form>
+        <a href="/register" class="float-right" id="homeNewUser">New User?</a>
       </div>
     </div>
   </div>
@@ -31,6 +33,4 @@
 </footer>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/public/js/homeScreen.js">
-
-</script>
+<script type="text/javascript" src="/js/homeScreen.js"></script>
