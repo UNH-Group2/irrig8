@@ -1,0 +1,102 @@
+<div class="jumbotron text-center p-0">
+  <h1>Zone Management</h1>
+</div>
+<div class="container">
+  <h3>Welcome {{user.fullName}}!</h3>
+  <div class="row">
+    {{#each zone}}
+    <div class="col-md-4">
+      <div class="card mb-2">
+        <img class="card-img-top" src={{this.imageURL}} alt="Lawn Zone Image">
+        <div class="card-img-overlay p-0" style="max-height: 200px">
+          <h3 class="card-title text-center">{{this.zoneName}}</h3>
+        </div>
+        <div class="card-body">
+
+          <button type="button" class="btn btn-sm btn-primary onOffBtn" data-zoneId="{{this.rachioZoneId}}">On</button>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+
+    {{!-- blank cards for display --}}
+    <div class="col-md-4">
+      <div class="card mb-2">
+        <img class="card-img-top" src="http://www.pup-grass.com/wp-content/uploads/2015/08/PupGear_Smarty_Resized-cropped.jpg" alt="Lawn Zone Image">
+        <div class="card-img-overlay p-0" style="max-height: 200px">
+          <h3 class="card-title text-center">Zone 1</h3>
+        </div>
+        <div class="card-body">
+
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneId="{{this.rachioZoneId}}">On</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-2">
+        <img class="card-img-top" src="http://www.pup-grass.com/wp-content/uploads/2015/08/PupGear_Smarty_Resized-cropped.jpg" alt="Lawn Zone Image">
+        <div class="card-img-overlay p-0" style="max-height: 200px">
+          <h3 class="card-title text-center">Zone 1</h3>
+        </div>
+        <div class="card-body">
+
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneId="{{this.rachioZoneId}}">On</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-2">
+        <img class="card-img-top" src="http://www.pup-grass.com/wp-content/uploads/2015/08/PupGear_Smarty_Resized-cropped.jpg" alt="Lawn Zone Image">
+        <div class="card-img-overlay p-0" style="max-height: 200px">
+          <h3 class="card-title text-center">Zone 1</h3>
+        </div>
+        <div class="card-body">
+
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneId="{{this.rachioZoneId}}">On</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-2">
+        <img class="card-img-top" src="http://www.pup-grass.com/wp-content/uploads/2015/08/PupGear_Smarty_Resized-cropped.jpg" alt="Lawn Zone Image">
+        <div class="card-img-overlay p-0" style="max-height: 200px">
+          <h3 class="card-title text-center">Zone 1</h3>
+        </div>
+        <div class="card-body">
+
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneId="{{this.rachioZoneId}}">On</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-2">
+        <img class="card-img-top" src="http://www.pup-grass.com/wp-content/uploads/2015/08/PupGear_Smarty_Resized-cropped.jpg" alt="Lawn Zone Image">
+        <div class="card-img-overlay p-0" style="max-height: 200px">
+          <h3 class="card-title text-center">Zone 1</h3>
+        </div>
+        <div class="card-body">
+
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneId="{{this.rachioZoneId}}">On</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-2">
+        <img class="card-img-top" src="http://www.pup-grass.com/wp-content/uploads/2015/08/PupGear_Smarty_Resized-cropped.jpg" alt="Lawn Zone Image">
+        <div class="card-img-overlay p-0" style="max-height: 200px">
+          <h3 class="card-title text-center">Zone 1</h3>
+        </div>
+        <div class="card-body">
+
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneId="{{this.rachioZoneId}}">On</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <a href="/">← Back To Home</a>
+</div>
+</div>
+
+<script src="js/zones.js" type="text/javascript"></script>
+

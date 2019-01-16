@@ -23,7 +23,7 @@ module.exports = function (app) {
     }),
     function (req, res) {
       console.log("called endpoint - post /login");
-      res.render("example", {
+      res.render("zones", {
         user: req.user
       }); // success! send them to a landing page
     });
