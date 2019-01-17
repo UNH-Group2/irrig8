@@ -1,6 +1,5 @@
 var db = require("../models");
 var rachioService = require("../services/rachioService");
-var zoneDetailsRepository = require("../repositories/zoneDetailsRepository");
 
 module.exports = function (app) {
 
