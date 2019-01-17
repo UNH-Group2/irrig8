@@ -1,4 +1,5 @@
 var passport = require("passport");
+var zoneRepository = require("../repositories/zoneRepository");
 
 module.exports = function (app) {
 
@@ -22,10 +23,13 @@ module.exports = function (app) {
       failureRedirect: "/login"
     }),
     function (req, res) {
-      console.log("called endpoint - post /login");
-      res.render("zones", {
-        user: req.user
-      }); // success! send them to a landing page
+      zoneRepository.getZones(req.body.username).then((resp) =>{
+        console.log(resp);
+        res.render("zones", {
+          user: resp
+        });
+
+      });
     });
 
   //--------------------
