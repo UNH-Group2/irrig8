@@ -39,8 +39,7 @@ let saveZoneUsagePowerOff = (deviceId) => {
 
   let now = moment().format("YYYY-MM-DD HH:mm:ss");
   let noDate = 0;
-
-  // TODO search and update active zone records   
+ 
   return db.ZoneUsage.update({
     endDateTime: now
   }, {
