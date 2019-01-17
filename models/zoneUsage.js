@@ -7,7 +7,8 @@ module.exports = function (sequelize, DataTypes) {
     },
     
     endDateTime: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      defaultValue: null
     }
   }, {
     freezeTableName: true

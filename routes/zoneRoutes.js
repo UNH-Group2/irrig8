@@ -27,31 +27,29 @@ module.exports = function (app) {
   });
 
   app.put("/api/zone/on", function (req, res) {
-    rachioService.turnOnZone(req.body.zoneId).then(resp => {
-      console.log(resp);
-    })
-      .then((resp) => {
+    rachioService.turnOnZone(req.body.zoneId)
+      .then(() => {
         zoneDetailsRepository.saveZoneUsagePowerOn(req.body.zoneId)
           .then((resp) => {
             console.log(resp);
-            res.json(resp);
-          }).catch(error => {
-            console.log(error);
+            return res.json(resp);
+          }).catch(() => {
+            console.log("power on db error");
+            return res.status(500).end();
           });
       });
   });
 
   app.put("/api/zone/off", function (req, res) {
-    rachioService.turnOffZone(req.body.deviceId).then(resp => {
-      console.log(resp);
-    })
-      .then((resp) => {
+    rachioService.turnOffZone(req.body.deviceId)
+      .then(() => {
         zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId)
           .then(resp => {
             console.log(resp);
-            res.json(resp);
-          }).catch(error => {
-            console.log(error);
+            return res.json(resp);
+          }).catch(() => {
+            console.log("power off db error");
+            return res.status(500).end();
           });
       });
   });

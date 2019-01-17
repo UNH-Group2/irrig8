@@ -8,7 +8,6 @@ let saveZoneUsagePowerOn = (zoneId) => {
   let now = moment().format("YYYY-MM-DD HH:mm:ss");
   let zoneUsage = {
     startDateTime: now,
-    endDateTime: 0,
     ZoneId: zoneId
   };
 
@@ -38,7 +37,6 @@ let saveZoneUsagePowerOn = (zoneId) => {
 let saveZoneUsagePowerOff = (deviceId) => {
 
   let now = moment().format("YYYY-MM-DD HH:mm:ss");
-  let noDate = 0;
  
   return db.ZoneUsage.update({
     endDateTime: now
@@ -56,7 +54,7 @@ let saveZoneUsagePowerOff = (deviceId) => {
       }
     }],
     where: {
-      endDateTime: noDate
+      endDateTime: null
     }
   });
 };
