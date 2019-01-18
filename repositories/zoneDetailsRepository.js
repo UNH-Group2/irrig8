@@ -1,30 +1,26 @@
 var moment = require("moment");
-
 var db = require("../models");
 
 // saveZoneUsagePowerOn() - record start time for only the specified zone 
 let saveZoneUsagePowerOn = (zoneId) => {
 
-  let now = moment().format("YYYY-MM-DD HH:mm:ss");
+  var utcDate = moment.utc().format();
+  var localTime = moment.utc(utcDate).local().format("YYYY-MM-DD HH:mm:ss");
+
   let zoneUsage = {
-    startDateTime: now,
+    startDateTime: localTime,
     ZoneId: zoneId
   };
 
-  return db.ZoneUsage.create(zoneUsage, { raw : true });
+  return db.ZoneUsage.create(zoneUsage, {
+    raw: true
+  });
 
 };
 
 // saveZoneUsagePowerOff() - record end times for *all active* zones of given device using this SQL logic
-// -- Option 1
-// UPDATE device, zone, zoneusage
-// SET zoneusage.EndDateTime = "2019-01-30 03:03:03"
-// where device.id = 1 and 
-// 	  device.id = zone.DeviceId and 
-//       zone.id = zoneusage.ZoneId and 
-//       Zoneusage.endDateTime = "2019-01-17 12:15:00";
-
-// -- Option 2 - ANSI SQL
+// 
+// -- Power off - ANSI SQL
 // UPDATE zoneusage
 // 	INNER JOIN zone ON zoneusage.ZoneId = zone.id
 //  INNER JOIN device ON zone.DeviceId = device.id
@@ -36,12 +32,13 @@ let saveZoneUsagePowerOn = (zoneId) => {
 
 let saveZoneUsagePowerOff = (deviceId) => {
 
-  let now = moment().format("YYYY-MM-DD HH:mm:ss");
- 
+  var utcDate = moment.utc().format();
+  var localTime = moment.utc(utcDate).local().format("YYYY-MM-DD HH:mm:ss");
+
   return db.ZoneUsage.update({
-    endDateTime: now
+    endDateTime: localTime
   }, {
-    raw : true,
+    raw: true,
     include: [{
       model: db.Zone,
       include: [{
@@ -60,6 +57,24 @@ let saveZoneUsagePowerOff = (deviceId) => {
   });
 };
 
+// getZoneUsageDetails() - get details of current zone
+//                       - Zone information:  for specified zone
+//                       - Usage Information: for all zones updates to that device
+//                 TODO: - power on/off state, on/off times, and minutes active per interval
+let getZoneUsageDetails = (zoneId) => {
+  return db.Zone.findAll({
+    include: [{
+      model: db.ZoneUsage,
+      where: {
+        ZoneId: zoneId
+      }
+    }],
+    where: {
+      id:  zoneId
+    }
+  });
+};
 
 module.exports.saveZoneUsagePowerOn = saveZoneUsagePowerOn;
 module.exports.saveZoneUsagePowerOff = saveZoneUsagePowerOff;
+module.exports.getZoneUsageDetails = getZoneUsageDetails;
