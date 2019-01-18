@@ -7,21 +7,22 @@
     {{#each user}}
     <div class="col-md-4">
       <div class="card mb-2">
-        <h4 class="card-header text-center" style="height: 80px">{{'Devices.Zones.zoneName'}}</h4>
+        <h4 class="card-header text-center">{{'Devices.Zones.zoneName'}}</h4>
         <img class="card-img-top" src={{'Devices.Zones.imageURL'}} alt="Lawn Zone Image">
         <div class="card-body">
 
-          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneid="{{'Devices.Zones.rachioZoneId'}}">On</button>
-          <button type="button" class="btn btn-sm btn-primary detailBtn" data-zoneid="{{'Devices.Zones.id'}}" data-toggle="collapse" data-target="#{{'Devices.Zones.id'}}" aria-expanded="false" aria-controls="collapseExample">Details</button>
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-rachio-zoneid="{{'Devices.Zones.rachioZoneId'}}"
+            data-zoneid="{{'Devices.Zones.id'}}" data-rachio-deviceid="{{'Devices.rachioDeviceId'}}" data-deviceid="{{'Devices.id'}}">On</button>
+
+          <button type="button" class="btn btn-sm btn-primary detailBtn" data-zoneid="{{'Devices.Zones.id'}}"
+            data-toggle="collapse" data-target="#{{'Devices.Zones.id'}}" aria-expanded="false" aria-controls="collapseExample">Details</button>
 
         </div>
         <div class="collapse card-body" id="{{'Devices.Zones.id'}}">
-            <p>example: data</p>
-            <p>example: data</p>
-            <p>example: data</p>
-            <p>example: data</p>
-            <p>example: data</p>
-       </div>
+          
+          <p id="{{'Devices.Zones.id'}}-details"></p>
+          
+        </div>
       </div>
     </div>
     {{/each}}
@@ -32,4 +33,3 @@
 </div>
 
 <script src="js/zones.js" type="text/javascript"></script>
-
