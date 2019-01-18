@@ -5,13 +5,12 @@ html {
   background-color: rgb(2, 136, 2);
 }
 body {
-  width:80%;
  margin: 0 auto; 
  display: flex;
  min-height: 100vh;
  flex-direction: column;
  background-color: white;
- background-image: url("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?cs=srgb&dl=adorable-animal-breed-1108099.jpg&fm=jpg");
+ background-image: url("https://www.hunterindustries.com/sites/default/files/styles/hunter_nav_banner_splash/public/hunter_-mp_rotors-007_rt.jpg?itok=ZeMCWICL");
  background-repeat: no-repeat;
  background-size: cover;
 }
@@ -29,7 +28,8 @@ h1 {
 }
 .bg-green{
   background-color:#82b440;
-  color: #eeeeee
+  color: #eeeeee;
+  margin-bottom: 10px;
 }
 .text-green{
   color: #82b440
@@ -43,6 +43,8 @@ a:hover{
 .no-background{
   background-color: #ffffff;
   z-index: 1;
+  min-width: 50vh;
+  min-height: 100vh;
 }
 nav{
   background-color: #2c2c2c
