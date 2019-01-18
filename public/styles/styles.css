@@ -5,12 +5,15 @@ html {
   background-color: rgb(2, 136, 2);
 }
 body {
-  width: 75%;
+  width:80%;
  margin: 0 auto; 
  display: flex;
  min-height: 100vh;
  flex-direction: column;
  background-color: white;
+ background-image: url("https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?cs=srgb&dl=adorable-animal-breed-1108099.jpg&fm=jpg");
+ background-repeat: no-repeat;
+ background-size: cover;
 }
 h1 {
   text-align: center;
@@ -21,3 +24,30 @@ h1 {
   background-color: rgb(2, 136, 2);
   padding: 20px 0;
 } */
+.top-margin{
+  margin: 20px;
+}
+.bg-green{
+  background-color:#82b440;
+  color: #eeeeee
+}
+.text-green{
+  color: #82b440
+}
+a:hover{
+  color: #eeeeee
+}
+.text-right{
+  text-align: right;
+}
+.no-background{
+  background-color: #ffffff;
+  z-index: 1;
+}
+nav{
+  background-color: #2c2c2c
+}
+.brand{
+  color: #eeeeee;
+  
+}
