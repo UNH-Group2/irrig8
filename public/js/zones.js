@@ -1,44 +1,29 @@
+//get info for single zone
+function getZoneInfo(zone ){
+  $.get("/api/zones/" + zone + "/details", function(data){
+    console.log("here!", data);
+  });
+}
+
 //when we click on/off
-$(".onOffBtn").on("click", function (event) {
+$(".onOffBtn").on("click", function () {
 
 //get zone id and change running state
-  var id = $(this).data("zoneId");
+  var id = $(this).data("zoneid");
   console.log(id);
-  //var runningState = ;
 
-  //if click OFF
-  //if (runningState === 0) {
-
-  //var newState = {
-  //running: 1
-  //};
-
-  $(this).text("Off");
+  $(this).text("Turn Off");
   $(this).addClass("btn-danger");
 
-  // Send the request.
-  $.ajax("/api/device/:deviceId/zones", {
-    type: "GET"
-  });
-//};
+  
+});
 
-//if click ON
-//if (runningState === 1) {
-
-//var newState = {
-//running: 0
-//};
-
-//$(this).text("On");
-//$(this).addClass("btn-success");
-
-// Send the request.
-//$.ajax("/api/device/:deviceId/zones", {
-//type: "GET",
-//})
-//};
-
-//when we click the image
-
-
+//when we click manage
+$(".detailBtn").on("click", function(){
+  
+  var id = $(this).data("zoneid");
+  console.log("We clicked: ",id);
+  getZoneInfo(id);
+  $("#" + id).toggle();
+  
 });
