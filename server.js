@@ -4,6 +4,8 @@ var exphbs = require("express-handlebars");
 var passport = require("passport");
 var Strategy = require("passport-local").Strategy;
 const securityUtils = require("./utils/securityUtils");
+var client = require("redis").createClient(process.env.REDIS_URL);
+var dataCache = require("./utils/dataCache");
 
 var db = require("./models");
 
@@ -83,6 +85,13 @@ var syncOptions = { force: false };
 if (process.env.NODE_ENV === "test") {
   syncOptions.force = true;
 }
+
+// connect to Redis and load OAuth tokens into cache
+client.on("connect", ()=>{
+  console.log("Node Environment: " + process.env.NODE_ENV);
+  console.log("connected to Redis");
+  dataCache.loadOAuthTokens();
+});
 
 // Starting the server, syncing our models ------------------------------------/
 db.sequelize.sync(syncOptions).then(function() {
