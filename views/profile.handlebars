@@ -1,58 +1,47 @@
 <div id="home">
-  <h1 class="text-center">User Profile</h1>
-  <div class="container">
-
-    <!--  ROW 1 - Picture -->
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
-        <img src="https://i.ytimg.com/vi/Mtl0Hfq2koU/maxresdefault.jpg" alt="House and lawn">
+      <div class="col-lg-12">
+        <div>
+
+        </div>
       </div>
     </div>
-
-    <!--  ROW 2 -Explanatory Text -->
     <div class="row">
-      <div class="col-md-12">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident consequuntur vero placeat nam impedit
-          expedita quam accusantium voluptate, suscipit adipisci quaerat molestiae optio assumenda tempore laboriosam
-          veritatis facilis laudantium rem?</p>
-      </div>
-
-      <!--  ROW 3 - Full User Profile Boxes (Editable & Rachio supplied side by side)-->
-      <div class="row">
-
-        <!-- ROW 3 / COL 1 - User Supplied Values -->
-        <div class="col-md-6">
-          <form>
-            <div class="form-group">
-              <label for="username">user name</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+      <div class="col-md-6 no-background-bottom">
+        <div class="">
+          <form class="padding" action="/login" method="post">
+            <div>
+              <label>Username:</label>
+              <input class="form-control" type="user" name="MyName456" placeholder="Your Login Name" />
             </div>
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            <div>
+              <label>Password:</label>
+              <input class="form-control" type="password" placeholder="Secret123" id="password" required>
+              <label>Confirm Password:</label>
+              <input class="form-control" type="password" placeholder="Secret123" id="confirm_password" required>
             </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            <div>
+              <label>Rachio Key:</label>
+              <input class="form-control" type="Key" name="Auth Token" placeholder="Your Rachio Key" />
             </div>
-            <button type="button" class="btn btn-primary" id="updateProfile">Update Profile</button>
-            <button type="button" class="btn btn-primary" id="Home">Home</button>
+            <div class="text-right top-margin">
+              <input type="submit" class="btn bg-green float-left" value="Register" />
+              <input type="submit" class="btn bg-green float-left move-over" value="Cancel" />
+            </div>
           </form>
         </div>
-
-        <!-- ROW 3 / COL 2 - Rachio supplied values (not editable) -->
-        <div class="col-md-6">
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident consequuntur vero placeat nam impedit
-            expedita quam accusantium voluptate, suscipit adipisci quaerat molestiae optio assumenda tempore laboriosam
-            veritatis facilis laudantium rem?</p>
-        </div>
+      </div>
+      <div class="col-md-6 no-background-bottom morePadding">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae numquam aperiam iure. Magni, laboriosam
+          harum! Quidem consectetur ab nihil nobis in, obcaecati ipsum, odit amet eum deserunt exercitationem eos esse!
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus quam, mollitia vitae pariatur iste sed
+          reprehenderit, sint maxime est laboriosam quidem obcaecati nostrum exercitationem beatae sit vero nihil illum
+          et!</p>
       </div>
     </div>
   </div>
-  <footer>
-    <p> </p>
-  </footer>
 </div>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="/js/index.js"></script>
+<script src="/js/homeScreen.js"></script>
