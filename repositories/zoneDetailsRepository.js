@@ -1,13 +1,14 @@
 var moment = require("moment");
-
 var db = require("../models");
 
 // saveZoneUsagePowerOn() - record start time for only the specified zone 
 let saveZoneUsagePowerOn = (zoneId) => {
 
-  let now = moment().format("YYYY-MM-DD HH:mm:ss");
+  var utcDate = moment.utc().format();
+  var localTime = moment.utc(utcDate).local().format("YYYY-MM-DD HH:mm:ss");
+
   let zoneUsage = {
-    startDateTime: now,
+    startDateTime: localTime,
     ZoneId: zoneId
   };
 
@@ -16,15 +17,8 @@ let saveZoneUsagePowerOn = (zoneId) => {
 };
 
 // saveZoneUsagePowerOff() - record end times for *all active* zones of given device using this SQL logic
-// -- Option 1
-// UPDATE device, zone, zoneusage
-// SET zoneusage.EndDateTime = "2019-01-30 03:03:03"
-// where device.id = 1 and 
-// 	  device.id = zone.DeviceId and 
-//       zone.id = zoneusage.ZoneId and 
-//       Zoneusage.endDateTime = "2019-01-17 12:15:00";
-
-// -- Option 2 - ANSI SQL
+// 
+// -- Power off - ANSI SQL
 // UPDATE zoneusage
 // 	INNER JOIN zone ON zoneusage.ZoneId = zone.id
 //  INNER JOIN device ON zone.DeviceId = device.id
@@ -36,10 +30,11 @@ let saveZoneUsagePowerOn = (zoneId) => {
 
 let saveZoneUsagePowerOff = (deviceId) => {
 
-  let now = moment().format("YYYY-MM-DD HH:mm:ss");
- 
+  var utcDate = moment.utc().format();
+  var localTime = moment.utc(utcDate).local().format("YYYY-MM-DD HH:mm:ss");
+  
   return db.ZoneUsage.update({
-    endDateTime: now
+    endDateTime: localTime
   }, {
     raw : true,
     include: [{
