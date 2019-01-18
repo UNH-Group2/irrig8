@@ -46,10 +46,30 @@ a:hover{
   min-width: 50vh;
   min-height: 100vh;
 }
+
 nav{
   background-color: #2c2c2c
 }
 .brand{
   color: #eeeeee;
   
+}
+/* start of profile page css */
+.no-background-bottom{
+  background-color: #ffffff;
+  z-index: 1;
+  margin-top: 49.8vh;
+  min-height: 50vh;
+}
+.padding{
+  padding: 5px;
+}
+.move-over{
+  margin-left: 5px;
+}
+.small-forms{
+  width: 60%;
+}
+.morePadding{
+  padding-top: 10px;
 }
