@@ -7,17 +7,25 @@
     {{#each user}}
     <div class="col-md-4">
       <div class="card mb-2">
+        <h4 class="card-header text-center" style="height: 80px">{{'Devices.Zones.zoneName'}}</h4>
         <img class="card-img-top" src={{'Devices.Zones.imageURL'}} alt="Lawn Zone Image">
-        <div class="card-img-overlay p-0" style="max-height: 200px">
-          <h3 class="card-title text-center">{{'Devices.Zones.zoneName'}}</h3>
-        </div>
         <div class="card-body">
 
-          <button type="button" class="btn btn-sm btn-primary onOffBtn" data-zoneId="{{'Devices.Zones.rachioZoneId'}}">On</button>
+          <button type="button" class="btn btn-sm btn-success onOffBtn" data-zoneid="{{'Devices.Zones.rachioZoneId'}}">On</button>
+          <button type="button" class="btn btn-sm btn-primary detailBtn" data-zoneid="{{'Devices.Zones.rachioZoneId'}}" data-toggle="collapse" data-target="#{{'Devices.Zones.rachioZoneId'}}" aria-expanded="false" aria-controls="collapseExample">Details</button>
+
         </div>
+        <div class="collapse card-body" id="{{'Devices.Zones.rachioZoneId'}}">
+            <p>example: data</p>
+            <p>example: data</p>
+            <p>example: data</p>
+            <p>example: data</p>
+            <p>example: data</p>
+       </div>
       </div>
     </div>
     {{/each}}
+
   </div>
   <a href="/">← Back To Home</a>
 </div>
