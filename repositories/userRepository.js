@@ -1,9 +1,10 @@
-var db = require("../models");
+const db = require("../models");
+const securityUtils = require("../utils/securityUtils");
 
 let saveUser = (userName, password, token, userInfo) => {
   let user = {
     userName: userName,
-    password: password,
+    password: securityUtils.hashData(password),
     rachioOAuthToken: token,
     rachioUserId: userInfo.id,
     email: userInfo.email,
@@ -16,10 +17,10 @@ let saveUser = (userName, password, token, userInfo) => {
       locationLatitude: userInfo.devices[0].latitude,
       locationLongitude: userInfo.devices[0].longitude,
       rachioDeviceId: userInfo.devices[0].id,
-      Zones: userInfo.devices[0].zones.filter(zone =>{
+      Zones: userInfo.devices[0].zones.filter(zone => {
         return zone.enabled;
-      }).map((zone)=>{
-        return { 
+      }).map((zone) => {
+        return {
           zoneName: zone.name,
           zoneNumber: zone.zoneNumber,
           rachioZoneId: zone.id,
@@ -36,5 +37,7 @@ let saveUser = (userName, password, token, userInfo) => {
     }]
   });
 };
+
+
 
 module.exports.saveUser = saveUser;
