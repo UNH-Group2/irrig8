@@ -38,6 +38,12 @@ let saveUser = (userName, password, token, userInfo) => {
   });
 };
 
-
+let getOAuthTokens = () =>{
+  return db.User.findAll({
+    raw: true,
+    attributes: ["id", "rachioOAuthToken"]
+  });
+};
 
 module.exports.saveUser = saveUser;
+module.exports.getOAuthTokens = getOAuthTokens;
