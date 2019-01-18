@@ -22,7 +22,7 @@ module.exports = function (sequelize, DataTypes) {
     },
 
     locationLongitude: {
-      type: DataTypes.DECIMAL(10,8)
+      type: DataTypes.DECIMAL(11,8)
     },
     
     rachioDeviceId: {

@@ -3,6 +3,7 @@ var express = require("express");
 var exphbs = require("express-handlebars");
 var passport = require("passport");
 var Strategy = require("passport-local").Strategy;
+const securityUtils = require("./utils/securityUtils");
 
 var db = require("./models");
 
@@ -17,7 +18,7 @@ passport.use(new Strategy(
     db.User.findByUsername(username, function(err, user) {
       if (err) { return cb(err); }
       if (!user) { return cb(null, false); }
-      if (user.password !== password) { return cb(null, false); }
+      if (user.password !== securityUtils.hashData(password)) { return cb(null, false); }
       return cb(null, user);
     });
   }));
