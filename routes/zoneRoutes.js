@@ -26,12 +26,12 @@ module.exports = function (app) {
     });
   });
 
-  app.put("/api/zone/on", function (req, res) {
-    rachioService.turnOnZone(req.body.zoneId)
+  app.post("/api/zone/on", function (req, res) {
+    rachioService.turnOnZone(req.body.rachioZoneId)
       .then(() => {
         zoneDetailsRepository.saveZoneUsagePowerOn(req.body.zoneId)
           .then((resp) => {
-            console.log(resp);
+            //console.log(resp);
             return res.json(resp);
           }).catch(() => {
             console.log("power on db error");
@@ -41,11 +41,11 @@ module.exports = function (app) {
   });
 
   app.put("/api/zone/off", function (req, res) {
-    rachioService.turnOffZone(req.body.deviceId)
+    rachioService.turnOffZone(req.body.rachioDeviceId)
       .then(() => {
         zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId)
           .then(resp => {
-            console.log(resp);
+            //console.log(resp);
             return res.json(resp);
           }).catch(() => {
             console.log("power off db error");

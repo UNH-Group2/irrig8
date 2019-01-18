@@ -11,7 +11,7 @@ let saveZoneUsagePowerOn = (zoneId) => {
     ZoneId: zoneId
   };
 
-  return db.ZoneUsage.create(zoneUsage);
+  return db.ZoneUsage.create(zoneUsage, { raw : true });
 
 };
 
@@ -41,6 +41,7 @@ let saveZoneUsagePowerOff = (deviceId) => {
   return db.ZoneUsage.update({
     endDateTime: now
   }, {
+    raw : true,
     include: [{
       model: db.Zone,
       include: [{
