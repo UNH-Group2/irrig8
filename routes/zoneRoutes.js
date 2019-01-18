@@ -16,15 +16,12 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/api/zones/:zoneId/details", function (req, res) {
+  app.get("/api/device/:deviceId/zones/:zoneId/details", function (req, res) {
     console.log("request parameter for zone details: ", req.params);
-    db.ZoneUsage.findAll({
-      where: {
-        id: req.params.zoneId
-      }
-    }).then(function (dbZone) {
-      res.json(dbZone);
-    });
+    zoneDetailsRepository.getZoneUsageDetails({ deviceId : req.params.deviceId, zoneId : req.params.zoneId} )
+      .then((dbResp) => {
+        return res.json(dbResp);
+      });
   });
 
   app.post("/api/zone/on", function (req, res) {

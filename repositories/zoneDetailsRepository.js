@@ -12,7 +12,9 @@ let saveZoneUsagePowerOn = (zoneId) => {
     ZoneId: zoneId
   };
 
-  return db.ZoneUsage.create(zoneUsage, { raw : true });
+  return db.ZoneUsage.create(zoneUsage, {
+    raw: true
+  });
 
 };
 
@@ -32,11 +34,11 @@ let saveZoneUsagePowerOff = (deviceId) => {
 
   var utcDate = moment.utc().format();
   var localTime = moment.utc(utcDate).local().format("YYYY-MM-DD HH:mm:ss");
-  
+
   return db.ZoneUsage.update({
     endDateTime: localTime
   }, {
-    raw : true,
+    raw: true,
     include: [{
       model: db.Zone,
       include: [{
@@ -55,6 +57,31 @@ let saveZoneUsagePowerOff = (deviceId) => {
   });
 };
 
+// getZoneUsageDetails() - get details of current zone, 
+//                       - Device information:  for specified device
+//                       - Zone information:  for specified zone
+//                       - Usage Information: for all zones updates to that device
+//                 TODO: - power on/off state, on/off times, and minutes active per interval
+let getZoneUsageDetails = (params) => {
+  return db.Device.findAll({
+    include: [{
+      model: db.Zone,
+      include: [{
+        model: db.ZoneUsage,
+        where: {
+          ZoneId: params.zoneId
+        }
+      }],
+      where: {
+        id: params.zoneId
+      }
+    }],
+    where: {
+      id:  params.deviceId
+    }
+  });
+};
 
 module.exports.saveZoneUsagePowerOn = saveZoneUsagePowerOn;
 module.exports.saveZoneUsagePowerOff = saveZoneUsagePowerOff;
+module.exports.getZoneUsageDetails = getZoneUsageDetails;
