@@ -16,9 +16,9 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/api/device/:deviceId/zones/:zoneId/details", function (req, res) {
+  app.get("/api/zones/:zoneId/details", function (req, res) {
     console.log("request parameter for zone details: ", req.params);
-    zoneDetailsRepository.getZoneUsageDetails({ deviceId : req.params.deviceId, zoneId : req.params.zoneId} )
+    zoneDetailsRepository.getZoneUsageDetails(req.params.zoneId )
       .then((dbResp) => {
         return res.json(dbResp);
       });

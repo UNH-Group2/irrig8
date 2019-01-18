@@ -57,27 +57,20 @@ let saveZoneUsagePowerOff = (deviceId) => {
   });
 };
 
-// getZoneUsageDetails() - get details of current zone, 
-//                       - Device information:  for specified device
+// getZoneUsageDetails() - get details of current zone
 //                       - Zone information:  for specified zone
 //                       - Usage Information: for all zones updates to that device
 //                 TODO: - power on/off state, on/off times, and minutes active per interval
-let getZoneUsageDetails = (params) => {
-  return db.Device.findAll({
+let getZoneUsageDetails = (zoneId) => {
+  return db.Zone.findAll({
     include: [{
-      model: db.Zone,
-      include: [{
-        model: db.ZoneUsage,
-        where: {
-          ZoneId: params.zoneId
-        }
-      }],
+      model: db.ZoneUsage,
       where: {
-        id: params.zoneId
+        ZoneId: zoneId
       }
     }],
     where: {
-      id:  params.deviceId
+      id:  zoneId
     }
   });
 };
