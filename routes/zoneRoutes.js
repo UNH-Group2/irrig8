@@ -16,10 +16,11 @@ module.exports = function (app) {
     });
   });
 
-  app.get("/api/device/:deviceId/zones/:zoneId/details", function (req, res) {
+  app.get("/api/zones/:zoneId/details", function (req, res) {
+    console.log("request parameter for zone details: ", req.params);
     db.ZoneUsage.findAll({
       where: {
-        id: req.params.ZoneId
+        id: req.params.zoneId
       }
     }).then(function (dbZone) {
       res.json(dbZone);
