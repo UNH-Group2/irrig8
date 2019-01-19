@@ -91,6 +91,7 @@ let summarizeZoneUsageDetails = (usage) => {
     let end = 0;
     let minutes = 0;
     let seconds = 0;
+    let hours = 0;
 
     if (detail.endDateTime !== null) {
       end = moment(detail.endDateTime).utc();
