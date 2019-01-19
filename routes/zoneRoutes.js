@@ -19,8 +19,7 @@ module.exports = function (app) {
     });
 
   app.get("/api/zones/:zoneId/details",
-  // TODO:  Add this line back in
-  //  require("connect-ensure-login").ensureLoggedIn(),
+    require("connect-ensure-login").ensureLoggedIn(),
     function (req, res) {
       console.log("request parameter for zone details: ", req.params);
       zoneDetailsRepository.getZoneUsageDetails(req.params.zoneId)

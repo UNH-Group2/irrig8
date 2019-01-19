@@ -65,9 +65,6 @@ let getZoneUsageDetails = (zoneId) => {
       where: {
         ZoneId: zoneId
       },
-      order: [
-        ["startDateTime" , "DESC"]
-      ]
     }],
     where: {
       id: zoneId
@@ -76,12 +73,16 @@ let getZoneUsageDetails = (zoneId) => {
 };
 
 // summarizeZoneUsageDetails() - returns the timestamp values of ZoneUsage fields in pretty format
-//                             - calculates the duration the zone was on
-//                             - records the state of the pump as on
+//                             - calculates the duration the zone was on in hours, minutes, seconds
+//                             - records the state of the pump as on/off
 let summarizeZoneUsageDetails = (usage) => {
 
   // local copy so we are able to modify the returned params
   let zone = JSON.parse(JSON.stringify(usage));
+
+  if (zone[0] === undefined) {
+    return zone; 
+  }
 
   zone[0].power = "off";
   for (let i=0; (i < zone[0].ZoneUsages.length); i++) {
@@ -93,20 +94,24 @@ let summarizeZoneUsageDetails = (usage) => {
 
     if (detail.endDateTime !== null) {
       end = moment(detail.endDateTime).utc();
-      minutes = parseInt((end - start) / 1000 / 60);
+      hours = parseInt((end - start) / 1000 / 60 / 60);
+      minutes = parseInt((end - start) / 1000 / 60) - (hours*60);
       seconds = (end - start) / 1000 - (minutes*60);
 
+      detail.hours = hours;
       detail.minutes = minutes;
       detail.seconds = seconds;
       detail.endDateTime = end.format("MMMM Do YYYY, h:mm:ss a");
-    } else if (i === 0) {
+    } else if (i === (zone[0].ZoneUsages.length - 1)) { 
+
       // most recent end time stamp is empty, pump must be on
-      zone[0].power = "on"; 
-    }
+      zone[0].power = "on";
+    } 
 
     detail.startDateTime = start.format("MMMM Do YYYY, h:mm:ss a");
   }
   
+  console.log(JSON.stringify(zone,null,2));
   return zone;
 };
 
