@@ -87,13 +87,14 @@ let summarizeZoneUsageDetails = (usage) => {
   zone[0].power = "off";
   for (let i=0; (i < zone[0].ZoneUsages.length); i++) {
     let detail = zone[0].ZoneUsages[i];
-    let start = moment(detail.startDateTime).utc();
+    let start = moment(detail.startDateTime).utc().local();
     let end = 0;
     let minutes = 0;
     let seconds = 0;
+    let hours = 0;
 
     if (detail.endDateTime !== null) {
-      end = moment(detail.endDateTime).utc();
+      end = moment(detail.endDateTime).utc().local();
       hours = parseInt((end - start) / 1000 / 60 / 60);
       minutes = parseInt((end - start) / 1000 / 60) - (hours*60);
       seconds = (end - start) / 1000 - (minutes*60);
@@ -101,14 +102,14 @@ let summarizeZoneUsageDetails = (usage) => {
       detail.hours = hours;
       detail.minutes = minutes;
       detail.seconds = seconds;
-      detail.endDateTime = end.format("MMMM Do YYYY, h:mm:ss a");
+      detail.endDateTime = end.format("YYYY-MM-DD HH:mm:ss");
     } else if (i === (zone[0].ZoneUsages.length - 1)) { 
 
       // most recent end time stamp is empty, pump must be on
       zone[0].power = "on";
     } 
 
-    detail.startDateTime = start.format("MMMM Do YYYY, h:mm:ss a");
+    detail.startDateTime = start.format("YYYY-MM-DD HH:mm:ss");
   }
   
   console.log(JSON.stringify(zone,null,2));

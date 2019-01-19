@@ -65,7 +65,8 @@ app.use(passport.session());
 app.engine(
   "handlebars",
   exphbs({
-    defaultLayout: "main"
+    defaultLayout: "main",
+    helpers: require("./public/js/helpers.js").helpers, 
   })
 );
 app.set("view engine", "handlebars");

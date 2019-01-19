@@ -25,6 +25,7 @@ module.exports = function (app) {
     function (req, res) {
       zoneRepository.getZones(req.body.username).then((resp) =>{
         res.render("zones", {
+          layout: "zone",
           user: resp
         });
 
