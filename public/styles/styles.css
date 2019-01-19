@@ -61,18 +61,34 @@ nav{
 .no-background-bottom{
   background-color: #ffffff;
   z-index: 1;
-  margin-top: 49.8vh;
   min-height: 50vh;
 }
 .padding{
-  padding: 5px;
+padding: 5px;
 }
 .move-over{
-  margin-left: 5px;
+margin-left: 5px;
 }
 .small-forms{
-  width: 60%;
+width: 60%;
 }
 .morePadding{
-  padding-top: 10px;
+padding-top: 10px;
+}
+.lessMargin{
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+.landscape{
+  max-height: 40vh;
+  min-width: 100%;
+}
+.noRightPadding{
+  padding-right: 0;
+}
+.noMargin{
+  margin:0;
+}
+.noPadding{
+  padding:0;
 }

@@ -1,9 +1,10 @@
-
-<div class="jumbotron text-center p-0">
-  <h1>Zone Management</h1>
-</div>
+<nav class="navbar" style="color: #ffffff;">
+  <span id="loggedUser"><h3>Welcome {{user.[0].fullName}}!</h3></span>
+  <h2>Zone Management</h2>
+  <input id="logout" type="submit" class="btn bg-green" value="Logout" />
+</nav>
 <div class="container">
-  <h3>Welcome {{user.[0].fullName}}!</h3>
+  
   <div class="row">
     {{#each user}}
     <div class="col-md-4">
@@ -20,9 +21,9 @@
 
         </div>
         <div class="collapse card-body" id="{{'Devices.Zones.id'}}">
-          
+
           <p id="{{'Devices.Zones.id'}}-details"></p>
-          
+
         </div>
       </div>
     </div>
@@ -34,3 +35,4 @@
 </div>
 
 <script src="js/zones.js" type="text/javascript"></script>
+<script src="js/profile.js" type="text/javascript"></script>
