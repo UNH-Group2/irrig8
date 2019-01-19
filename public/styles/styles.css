@@ -12,9 +12,9 @@ body {
 
 }
 .bg-pic{
- background-image: url("http://mountainoasis.net/wp-content/uploads/2012/02/RotorsBeauty.jpg");
+ background-image: url("https://mountainoasis.net/wp-content/uploads/2012/02/RotorsBeauty.jpg");
  background-repeat: no-repeat;
- background-size: 115vh 65vw;
+ background-size: 100% 90vh;
 }
 #loggedUser{
   color: #ffffff;
