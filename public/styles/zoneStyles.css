@@ -1,0 +1,22 @@
+.usage-detail-tbl, table, th, td {
+  border: 1px solid black;
+  text-align: center;
+}
+
+th, td {
+  padding: 15px;
+}
+
+table {
+  border-spacing: 5px;
+  font-family: arial, sans-serif;
+  width: 100%
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.usage-status-lbl {
+  color: red;
+}

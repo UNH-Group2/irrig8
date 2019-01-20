@@ -59,28 +59,28 @@ let saveZoneUsagePowerOff = (deviceId) => {
 // getZoneUsageDetails() - get details of current zone and zone usage
 //                       - Zone information:  for specified zone
 //                       - Usage Information: for specified zone limited to last 5 entries
-//                       - Limit to the last 5 entries returned in ascending order
+//                       - Limit to the last 5 entries returned in descending order
 // (SELECT *
 //   FROM Zone  
 //      INNER JOIN ZoneUsage ON Zone.id = ZoneUsages.ZoneId AND ZoneUsages.ZoneId = n 
 //      WHERE Zone.id = n
 //      ORDER BY startDateTime DESC
-//      LIMIT 5) ORDER BY startDateTime ASC;
+//      LIMIT 5) ORDER BY startDateTime ASC;   <--- use this syntax to reverse the output to latest records ascending
 let getZoneUsageDetails = (zoneId) => {
   return db.Zone.findAll({
     include: [{
       model: db.ZoneUsage,
       where: {
         ZoneId: zoneId
-      }
-      // order: [
-      //   ["startDateTime", "DESC"]
-      // ],
-      // limit: 5
+      },
+      order: [
+        ["startDateTime", "DESC"]
+      ],
+      limit: 5,
     }],
     where: {
       id: zoneId
-    },
+    }
   });
 };
 
@@ -141,14 +141,12 @@ let setZonePowerState = (usage) => {
       reject("Error detecting power on/off state");
     }
 
+    zone[0].power = "off";
     if (zone[0].ZoneUsages.length > 0) {
-      let index = zone[0].ZoneUsages.length;
-      let lastUsageEvent = zone[0].ZoneUsages[index - 1];
+      let lastUsageEvent = zone[0].ZoneUsages[0];
 
       if (lastUsageEvent.endDateTime === null) {
         zone[0].power = "on";
-      } else {
-        zone[0].power = "off";
       }
     }
 

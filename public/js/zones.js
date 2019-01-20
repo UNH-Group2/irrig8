@@ -14,73 +14,85 @@ function getZoneInfo(zoneId) {
 
 let updateZoneInfo = (data, zoneId)=>{
 
-  var recentUsage = [data[0].ZoneUsages[data[0].ZoneUsages.length - 1], data[0].ZoneUsages[data[0].ZoneUsages.length - 2], data[0].ZoneUsages[data[0].ZoneUsages.length - 3]];
+  const maxRows = 5;
+  let recentUsage = [];
+  let usage = [];
+  let maxIdx = data[0].ZoneUsages.length < maxRows ? data[0].ZoneUsages.length : maxRows;
+  for (let i=0; (i < maxIdx); i++) {
+    let item = data[0].ZoneUsages[i];
+    recentUsage.push(item);
+ 
+    let entry = {};
+    entry.start = item.startDateTime;
+    entry.minutes = item.minutes;
+    entry.seconds = item.seconds;
+    usage.push(entry);
+  }
 
-  // var test = moment(usage[0].startDateTime).format("MMM, Do");
-
-  var usage = [
-    {
-      start: recentUsage[0].startDateTime,
-      duration: recentUsage[0].minutes
-    },
-    {
-      start: recentUsage[1].startDateTime,
-      duration: recentUsage[1].minutes
-    },
-    {
-      start: recentUsage[2].startDateTime,
-      duration: recentUsage[2].minutes
-    }
-  ];
-
-  // usage.map((currentUsage)=>{
-  //   console.log("start: ", currentUsage.start);
-  //   console.log("duration: ", currentUsage.duration);
-  //   console.log("power: ", currentUsage.power);
-    
-  // }); 
-
+  let zone = data[0];
   let status = "";
-
-  console.log("duration: ", usage[0].duration);
-
-  console.log("minutes: " + recentUsage[0].minutes);
-
-  if (usage[0].duration === 0) {
-    console.log("active");
+  if (zone.power === "off") {
     status = "Inactive";
   }
   else{
-    console.log("inactive");
     status = "Active";
   }
 
-  // console.log(status);
-
-  $("#" + zoneId + "-details").html("<p>Status: " + status + "<p>start: " + usage[0].start + "<p>" + "<p>duration: " + usage[0].duration + "<p><p>start: " + usage[1].start + "<p>" + "<p>end: " + usage[1].duration + "<p><p>start: " + usage[2].start + "<p>" + "<p>end: " + usage[0].duration + "<p>");
+  // Construct a table for the card usage details
+  // <div>
+  //   <p>Status: Active/Inactive</p>
+  //   <table>
+  //     <tr>
+  //       <th>Start</th>
+  //       <th>Duration</th>
+  //     </tr>
+  //     <tr>
+  //       <td>YYYY-MM-DD HH:mm:ss</td>
+  //       <td>mm:ss</td>
+  //     </tr>
+  //   </table>
+  // </div>
+  var divHTML = $("<div>");
+  var table = $("<table>");
+  var thStart = $("<th>").append("Start");
+  var thDuration = $("<th>").append("Duration (min:sec)");
+  var trHdr = $("<tr>");
+  var pStatus = $("<p>").text("Status: " + status);
+  pStatus.addClass("usage-status-lbl");
+  table.addClass("usage-detail-tbl");
+  divHTML.append(pStatus);
+  divHTML.append(table);
+  table.append(trHdr);
+  trHdr.append(thStart);
+  trHdr.append(thDuration);
+  for (let i=0; (i < maxIdx); i++) {
+    var tr = $("<tr>");
+    var tdStart = $("<td>").html(usage[i].start);
+    var tdDuration = $("<td>").html(usage[i].minutes + "m : " + usage[i].seconds + "s" );
+    table.append(tr);
+    tr.append(tdStart);
+    tr.append(tdDuration);
+  }
+  $("#" + zoneId + "-details").html(divHTML);
 
 };
 
 //turn zone on
-function zoneOn(zone) {
+function turnZoneOn(zone) {
   $.ajax("/api/zone/on", {
     type: "POST",
     data: zone, 
     success:getZoneInfo(zone.zoneId)
   });
-  // //refresh zone usage
-  // getZoneInfo(zone.zoneId);
 }
 
 //turn zone off
-function zoneOff(zone) {
+function turnZoneOff(zone) {
   $.ajax("/api/zone/off", {
     type: "PUT",
     data: zone,
     success:getZoneInfo(zone.zoneId)
   });
-  // //refresh zone usage
-  // getZoneInfo(zone.zoneId);
 }
 
 //when we click on/off
@@ -96,15 +108,14 @@ $(".onOffBtn").on("click", function () {
     };
 
     //run zoneOn request and change button
-    zoneOn(zone);
+    turnZoneOn(zone);
     $(this).text("Turn Off");
     $(this).removeClass("btn-success");
     $(this).addClass("btn-danger");
     isRunning = true;
-  }
 
-  //if on, turn off
-  else if (isRunning) {
+  } else {
+    //is on, turn off
 
     //save data for request
     var zone = {
@@ -114,12 +125,15 @@ $(".onOffBtn").on("click", function () {
     };
 
     //run zoneOff request and change button
-    zoneOff(zone);
+    turnZoneOff(zone);
     $(this).text("Turn On");
     $(this).removeClass("btn-danger");
     $(this).addClass("btn-success");
     isRunning = false;
   }
+
+  // Refresh Table Data
+  getZoneInfo(zone.zoneId);
 
 });
 
