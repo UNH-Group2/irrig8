@@ -2,18 +2,25 @@ require("dotenv").config();
 var express = require("express");
 var exphbs = require("express-handlebars");
 var passport = require("passport");
-var Strategy = require("passport-local").Strategy;
+var BasicStrategy = require("passport-http").BasicStrategy;
+var LocalStrategy = require("passport-local").Strategy;
 const securityUtils = require("./utils/securityUtils");
 
 var db = require("./models");
 
-// Configure the local strategy for use by Passport.
-//
-// The local strategy require a `verify` function which receives the credentials
-// (`username` and `password`) submitted by the user.  The function must verify
-// that the password is correct and then invoke `cb` with a user object, which
-// will be set at `req.user` in route handlers after authentication.
-passport.use(new Strategy(
+// User BasicStrategy for API call (/api)
+passport.use(new BasicStrategy(
+  function(username, password, cb) {
+    db.User.findByUsername(username, function(err, user) {
+      if (err) { return cb(err); }
+      if (!user) { return cb(null, false); }
+      if (user.password !== securityUtils.hashData(password)) { return cb(null, false); }
+      return cb(null, user);
+    });
+  }));
+
+// Use LocalStrategy for HTML calls (/html)
+passport.use(new LocalStrategy(
   function(username, password, cb) {
     db.User.findByUsername(username, function(err, user) {
       if (err) { return cb(err); }

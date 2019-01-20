@@ -1,6 +1,7 @@
 var db = require("../models");
 var rachioService = require("../services/rachioService");
 var userRepository = require("../repositories/userRepository");
+var passport = require("passport");
 
 module.exports = function (app) {
   // --------------------------------------------------------------------------
@@ -12,24 +13,17 @@ module.exports = function (app) {
   // --------------------------------------------------------------------------
 
   //--------------------
-  // CREATE - POST("/api/user") - add a new User to the user table, returns new user id 
-  //                            - requires authenticated user to access
+  // CREATE - POST("/api/user") - This API is not protected, as anyone can create a new account
   app.post("/api/user/",
     function (req, res) {
-
-      console.log("post /api/user called");
-
       rachioService.getUserId(req.body.rachioOAuthToken)
         .then((resp) => {
           rachioService.getUserInfo(req.body.rachioOAuthToken, resp.id)
             .then((resp) => {
-              userRepository.saveUser(req.body.userName, req.body.password, req.body.rachioOAuthToken, resp)
+              userRepository.saveUser(req.body.username, req.body.password, req.body.rachioOAuthToken, resp)
                 .then((resp) => {
                   console.log("post /api/user success - id " + resp.id + " added to User table ");
-                  // should send back the zone page with everything populated
-                  return res.json({
-                    id: resp.id
-                  });
+                  res.redirect("/login");
                 }).catch(function (err) {
                   console.log("Error returned from User.create() - could not complete insert request");
                   console.log(err);
@@ -43,7 +37,7 @@ module.exports = function (app) {
   // READ - GET("/api/user/:id") - returns the specified user from the User table  
   //                             - requires authenticated user to access
   app.get("/api/user/:id",
-    require("connect-ensure-login").ensureLoggedIn(),
+    passport.authenticate("basic", {session: false}),
     function (req, res) {
 
       console.log("GET /api/user/:id called for id: " + req.params.id);
@@ -67,7 +61,7 @@ module.exports = function (app) {
   // UPDATE - PUT("/api/user/:id") - update the fields of the specified user
   //                               - requires authenticated user to access
   app.put("/api/user/:id",
-    require("connect-ensure-login").ensureLoggedIn(),
+    passport.authenticate("basic", {session: false}),
     function (req, res) {
 
       console.log("PUT /api/user/:id for id: ", req.params.id);
@@ -99,7 +93,7 @@ module.exports = function (app) {
   // DELETE - DELETE("/api/user/:id") - delete the specified user from the User table
   //                                  - requires authenticated user to access
   app.delete("/api/user/:id",
-    require("connect-ensure-login").ensureLoggedIn(),
+    passport.authenticate("basic", {session: false}),
     function (req, res) {
       console.log("DELETE /api/user called on id: ", req.params.id);
       db.User.destroy({
