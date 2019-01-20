@@ -3,11 +3,17 @@ var isRunning = false;
 
 //get usage info for single zone
 function getZoneInfo(zoneId) {
-
-  $.get("/api/zones/" + zoneId + "/details", (data) =>{
-    updateZoneInfo(data, zoneId);
+  $.ajax
+  ({
+    headers: {
+      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+    },
+    type: "GET",
+    url: "/api/zones/" + zoneId + "/details",
+    success: (data) =>{
+      updateZoneInfo(data, zoneId);
+    }
   });
-
 }
 
 let updateZoneInfo = (data, zoneId)=>{
@@ -76,6 +82,9 @@ let updateZoneInfo = (data, zoneId)=>{
 //turn zone on
 function turnZoneOn(zone) {
   $.ajax("/api/zone/on", {
+    headers: {
+      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+    },
     type: "POST",
     data: zone, 
     success:getZoneInfo(zone.zoneId)
@@ -85,6 +94,9 @@ function turnZoneOn(zone) {
 //turn zone off
 function turnZoneOff(zone) {
   $.ajax("/api/zone/off", {
+    headers: {
+      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+    },
     type: "PUT",
     data: zone,
     success:getZoneInfo(zone.zoneId)

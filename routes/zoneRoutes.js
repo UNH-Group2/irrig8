@@ -1,11 +1,12 @@
 var db = require("../models");
 var rachioService = require("../services/rachioService");
 var zoneDetailsRepository = require("../repositories/zoneDetailsRepository");
+var passport = require("passport");
 
 module.exports = function (app) {
 
   app.get("/api/device/:deviceId/zones",
-    require("connect-ensure-login").ensureLoggedIn(),
+    passport.authenticate("basic", {session: false}),
     function (req, res) {
       db.Zone.findAll({
         where: {
@@ -19,7 +20,7 @@ module.exports = function (app) {
     });
 
   app.get("/api/zones/:zoneId/details",
-    require("connect-ensure-login").ensureLoggedIn(),
+    passport.authenticate("basic", {session: false}),
     function (req, res) {
       console.log("request parameter for zone details: ", req.params);
       zoneDetailsRepository.getZoneUsageDetails(req.params.zoneId)
@@ -36,7 +37,7 @@ module.exports = function (app) {
     });
 
   app.post("/api/zone/on",
-    require("connect-ensure-login").ensureLoggedIn(),
+    passport.authenticate("basic", {session: false}),
     function (req, res) {
       rachioService.turnOnZone(req.body.rachioZoneId)
         .then(() => {
@@ -51,7 +52,7 @@ module.exports = function (app) {
     });
 
   app.put("/api/zone/off",
-    require("connect-ensure-login").ensureLoggedIn(),
+    passport.authenticate("basic", {session: false}),
     function (req, res) {
       rachioService.turnOffZone(req.body.rachioDeviceId)
         .then(() => {
