@@ -133,8 +133,8 @@ let setZonePowerState = (usage) => {
 
   return new Promise((resolve, reject) => {
 
-//    let zone = JSON.parse(JSON.stringify(usage));
-    let zone = usage;
+    // local copy so we are able to modify the returned params
+    let zone = JSON.parse(JSON.stringify(usage));
 
     // occasionally zones have no usage at startup
     if (zone[0] === undefined) {
