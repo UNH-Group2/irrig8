@@ -41,7 +41,7 @@ let saveUser = (userName, password, token, userInfo) => {
 let getOAuthTokens = () =>{
   return db.User.findAll({
     raw: true,
-    attributes: ["id", "rachioOAuthToken"]
+    attributes: ["userName", "rachioOAuthToken"]
   });
 };
 

@@ -18,7 +18,6 @@ var getUserId = function (token) {
 
   return rp.get(options)
     .then((resp) => {
-      console.log(resp);
       return resp;
     })
     .catch((err) => { 
@@ -50,8 +49,9 @@ var getUserInfo = function (token, id) {
     });
 };
 
-var turnOnZone = function (zoneId) {
-  console.log(zoneId);
+var turnOnZone = function (token, zoneId) {
+  console.log("ZoneId: ", zoneId);
+  console.log("Token: ", token);
   var options = {
     uri: "https://api.rach.io/1/public/zone/start",
     method: "PUT",
@@ -60,7 +60,7 @@ var turnOnZone = function (zoneId) {
     },
     auth: {
       // we will pull this from redis cache based on userName;
-      "bearer": "248886e0-f2c7-4206-9538-223153139ca4"
+      "bearer": token
     },
     body: {
       id: zoneId,
@@ -74,12 +74,11 @@ var turnOnZone = function (zoneId) {
       return resp;
     })
     .catch((err) => { 
-      console.log(err);
       return err;
     });
 };
 
-var turnOffZone = function (deviceId) {
+var turnOffZone = function (token, deviceId) {
   var options = {
     uri: "https://api.rach.io/1/public/device/stop_water",
     method: "PUT",
@@ -88,7 +87,7 @@ var turnOffZone = function (deviceId) {
     },
     auth: {
       // we will pull this from redis cache based on userName;
-      "bearer": "248886e0-f2c7-4206-9538-223153139ca4"
+      "bearer": token
     },
     body: {
       id: deviceId,
@@ -101,7 +100,6 @@ var turnOffZone = function (deviceId) {
       return resp;
     })
     .catch((err) => { 
-      console.log(err);
       return err;
     });
 };

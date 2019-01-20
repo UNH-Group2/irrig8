@@ -2,6 +2,8 @@ var db = require("../models");
 var rachioService = require("../services/rachioService");
 var zoneDetailsRepository = require("../repositories/zoneDetailsRepository");
 var passport = require("passport");
+var dataCache = require("../utils/dataCache");
+var securityUtils = require("../utils/securityUtils");
 
 module.exports = function (app) {
 
@@ -39,30 +41,36 @@ module.exports = function (app) {
   app.post("/api/zone/on",
     passport.authenticate("basic", {session: false}),
     function (req, res) {
-      rachioService.turnOnZone(req.body.rachioZoneId)
-        .then(() => {
-          zoneDetailsRepository.saveZoneUsagePowerOn(req.body.zoneId)
-            .then((resp) => {
-              return res.json(resp);
-            }).catch(() => {
-              console.log("power on db error");
-              return res.status(500).end();
-            });
-        });
+      let username = securityUtils.getUserNameFromHeader(req.headers);
+      dataCache.retrieveValueFromCache(username).then(token =>{
+        rachioService.turnOnZone(token, req.body.rachioZoneId)
+          .then(() => {
+            zoneDetailsRepository.saveZoneUsagePowerOn(req.body.zoneId)
+              .then((resp) => {
+                return res.json(resp);
+              }).catch(() => {
+                console.log("power on db error");
+                return res.status(500).end();
+              });
+          });
+      });
     });
 
   app.put("/api/zone/off",
     passport.authenticate("basic", {session: false}),
     function (req, res) {
-      rachioService.turnOffZone(req.body.rachioDeviceId)
-        .then(() => {
-          zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId)
-            .then(resp => {
-              return res.json(resp);
-            }).catch(() => {
-              console.log("power off db error");
-              return res.status(500).end();
-            });
-        });
+      let username = securityUtils.getUserNameFromHeader(req.headers);
+      dataCache.retrieveValueFromCache(username).then(token => {
+        rachioService.turnOffZone(token, req.body.rachioDeviceId)
+          .then(() => {
+            zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId)
+              .then(resp => {
+                return res.json(resp);
+              }).catch(() => {
+                console.log("power off db error");
+                return res.status(500).end();
+              });
+          });
+      });
     });
 };

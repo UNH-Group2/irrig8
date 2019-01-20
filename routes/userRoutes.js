@@ -2,6 +2,7 @@ var db = require("../models");
 var rachioService = require("../services/rachioService");
 var userRepository = require("../repositories/userRepository");
 var passport = require("passport");
+var dataCache = require("../utils/dataCache");
 
 module.exports = function (app) {
   // --------------------------------------------------------------------------
@@ -23,7 +24,10 @@ module.exports = function (app) {
               userRepository.saveUser(req.body.username, req.body.password, req.body.rachioOAuthToken, resp)
                 .then((resp) => {
                   console.log("post /api/user success - id " + resp.id + " added to User table ");
-                  res.redirect("/login");
+                  dataCache.saveToCache(req.body.username, req.body.rachioOAuthToken, () => {  
+                    console.log("OAuth Token saved to cache");
+                    res.redirect("/login");
+                  });
                 }).catch(function (err) {
                   console.log("Error returned from User.create() - could not complete insert request");
                   console.log(err);
