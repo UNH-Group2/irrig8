@@ -4,8 +4,6 @@ var isRunning = false;
 //get usage info for single zone
 function getZoneInfo(zoneId) {
 
-  //console.log(zoneId + "power: " + data[0].power);
-
   $.get("/api/zones/" + zoneId + "/details", (data) =>{
     updateZoneInfo(data, zoneId);
   });
@@ -15,12 +13,10 @@ function getZoneInfo(zoneId) {
 let updateZoneInfo = (data, zoneId)=>{
 
   const maxRows = 5;
-  let recentUsage = [];
   let usage = [];
   let maxIdx = data[0].ZoneUsages.length < maxRows ? data[0].ZoneUsages.length : maxRows;
   for (let i=0; (i < maxIdx); i++) {
     let item = data[0].ZoneUsages[i];
-    recentUsage.push(item);
  
     let entry = {};
     entry.start = item.startDateTime;
@@ -133,7 +129,7 @@ $(".onOffBtn").on("click", function () {
   }
 
   // Refresh Table Data
-  getZoneInfo(zone.zoneId);
+  // getZoneInfo(zone.zoneId);
 
 });
 
