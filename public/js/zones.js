@@ -116,7 +116,7 @@ function getZoneInfo(zoneId) {
       $(this).addClass("btn-success");
       $(this).data("isrunning", false);
     }
-  }
+  });
 
 //turn zone on
 function turnZoneOn(zone) {
