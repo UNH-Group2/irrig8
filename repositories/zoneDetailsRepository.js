@@ -1,6 +1,5 @@
 var moment = require("moment");
 var db = require("../models");
-var Sequelize = require("sequelize");
 
 // saveZoneUsagePowerOn() - record start time for only the specified zone 
 let saveZoneUsagePowerOn = (zoneId) => {
