@@ -1,14 +1,20 @@
 
 $(document).ready(function() {
 
-  //get usage info for single zone
-  function getZoneInfo(zoneId) {
-
-    $.get("/api/zones/" + zoneId + "/details", (data) =>{
+//get usage info for single zone
+function getZoneInfo(zoneId) {
+  $.ajax
+  ({
+    headers: {
+      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+    },
+    type: "GET",
+    url: "/api/zones/" + zoneId + "/details",
+    success: (data) =>{
       updateZoneInfo(data, zoneId);
-    });
-
-  }
+    }
+  });
+}
 
   let updateZoneInfo = (data, zoneId)=>{
 
@@ -72,25 +78,7 @@ $(document).ready(function() {
     $("#" + zoneId + "-details").html(divHTML);
 
   };
-
-  //turn zone on
-  function turnZoneOn(zone) {
-    $.ajax("/api/zone/on", {
-      type: "POST",
-      data: zone, 
-      success:getZoneInfo(zone.zoneId)
-    });
-  }
-
-  //turn zone off
-  function turnZoneOff(zone) {
-    $.ajax("/api/zone/off", {
-      type: "PUT",
-      data: zone,
-      success:getZoneInfo(zone.zoneId)
-    });
-  }
-
+  
   //when we click on/off
   $(".onOffBtn").on("click", function () {
 
@@ -128,8 +116,31 @@ $(document).ready(function() {
       $(this).addClass("btn-success");
       $(this).data("isrunning", false);
     }
+  }
 
+//turn zone on
+function turnZoneOn(zone) {
+  $.ajax("/api/zone/on", {
+    headers: {
+      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+    },
+    type: "POST",
+    data: zone, 
+    success:getZoneInfo(zone.zoneId)
   });
+}
+
+//turn zone off
+function turnZoneOff(zone) {
+  $.ajax("/api/zone/off", {
+    headers: {
+      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+    },
+    type: "PUT",
+    data: zone,
+    success:getZoneInfo(zone.zoneId)
+  });
+}
 
   //when we click manage
   $(".detailBtn").on("click", function () {

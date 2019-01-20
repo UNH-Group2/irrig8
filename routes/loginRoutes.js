@@ -1,5 +1,4 @@
 var passport = require("passport");
-var zoneRepository = require("../repositories/zoneRepository");
 
 module.exports = function (app) {
 
@@ -17,49 +16,23 @@ module.exports = function (app) {
 
   //--------------------
   // POST ("/login") - authenticates their username & password via Passport
-  //                 - "username" and "password" are required to be part of the passed req body
+  // "username" and "password" are required to be part of the passed req body
   app.post("/login",
-    passport.authenticate("local", {
-      failureRedirect: "/login"
-    }),
-    function (req, res) {
-      zoneRepository.getZones(req.body.username).then((resp) =>{
-        res.render("zones", {
-          layout: "zone",
-          user: resp
-        });
-
-      });
+    passport.authenticate("local", 
+      { 
+        failureRedirect: "/login"
+      }),
+    (req, res) =>{
+      res.redirect(`/zones/${req.body.username}`);
     });
 
   //--------------------
   // GET ("/logout") - remove their authenticated id from session storage
-  //                 - redirects them to the home page
+  // redirects them to the home page
   app.get("/logout",
     function (req, res) {
       console.log("called endpoint - get /logout");
       req.logout();
       res.redirect("/");
     });
-
-  //--------------------
-  // GET ("/profile") - redirect to a profile page
-  //                  - supplies the authenticated user id in the body
-  app.get("/profile",
-    require("connect-ensure-login").ensureLoggedIn(),
-    function (req, res) {
-      console.log("called endpoint - get /profile"),
-      res.render("profile", {
-        user: req.user
-      });
-    });
-
-  //--------------------
-  // GET ("/register") - redirect to a profile page for an unauthenticated user
-  app.get("/register",
-    function (req, res) {
-      console.log("called endpoint - get /register"),
-      res.render("profile");
-    });
-
 };
