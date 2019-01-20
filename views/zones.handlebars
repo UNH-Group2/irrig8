@@ -1,11 +1,13 @@
 <nav class="navbar" style="color: #ffffff;">
-  <span id="loggedUser"><h3>Welcome {{user.[0].fullName}}!</h3></span>
+  <span id="loggedUser">
+    <h3>Welcome {{user.[0].fullName}}!</h3>
+  </span>
   <h2>Zone Management</h2>
   <input id="logout" type="submit" class="btn bg-green" value="Logout" />
 </nav>
 <br>
 <div class="container">
-  
+
   <div class="row">
     {{#each user}}
     <div class="col-md-4">
@@ -15,7 +17,8 @@
         <div class="card-body">
 
           <button type="button" class="btn btn-sm btn-success onOffBtn" data-rachio-zoneid="{{'Devices.Zones.rachioZoneId'}}"
-            data-zoneid="{{'Devices.Zones.id'}}" data-rachio-deviceid="{{'Devices.rachioDeviceId'}}" data-deviceid="{{'Devices.id'}}">Turn On</button>
+            data-zoneid="{{'Devices.Zones.id'}}" data-rachio-deviceid="{{'Devices.rachioDeviceId'}}" data-deviceid="{{'Devices.id'}}"
+            data-isRunning="false">Turn On</button>
 
           <button type="button" class="btn btn-sm btn-primary detailBtn" data-zoneid="{{'Devices.Zones.id'}}"
             data-toggle="collapse" data-target="#{{'Devices.Zones.id'}}" aria-expanded="false" aria-controls="collapseExample">Details</button>
