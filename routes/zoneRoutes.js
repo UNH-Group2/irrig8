@@ -24,8 +24,14 @@ module.exports = function (app) {
       console.log("request parameter for zone details: ", req.params);
       zoneDetailsRepository.getZoneUsageDetails(req.params.zoneId)
         .then((dbResp) => {
-          let summaryList = zoneDetailsRepository.summarizeZoneUsageDetails(dbResp);
-          return res.json(summaryList);
+          zoneDetailsRepository.summarizeZoneUsageDetails(dbResp)
+            .then((response) =>{
+              zoneDetailsRepository.setZonePowerState(response)
+                .then((resp) =>{
+                  console.log(JSON.stringify(resp, null, 2));
+                  return res.json(resp);
+                });
+            });
         });
     });
 
@@ -36,7 +42,6 @@ module.exports = function (app) {
         .then(() => {
           zoneDetailsRepository.saveZoneUsagePowerOn(req.body.zoneId)
             .then((resp) => {
-              //console.log(resp);
               return res.json(resp);
             }).catch(() => {
               console.log("power on db error");
@@ -52,7 +57,6 @@ module.exports = function (app) {
         .then(() => {
           zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId)
             .then(resp => {
-              //console.log(resp);
               return res.json(resp);
             }).catch(() => {
               console.log("power off db error");

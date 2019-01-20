@@ -1,5 +1,6 @@
 var moment = require("moment");
 var db = require("../models");
+var Sequelize = require("sequelize");
 
 // saveZoneUsagePowerOn() - record start time for only the specified zone 
 let saveZoneUsagePowerOn = (zoneId) => {
@@ -32,7 +33,7 @@ let saveZoneUsagePowerOn = (zoneId) => {
 let saveZoneUsagePowerOff = (deviceId) => {
 
   var localTime = moment().format("YYYY-MM-DD HH:mm:ss");
-  
+
   return db.ZoneUsage.update({
     endDateTime: localTime
   }, {
@@ -55,68 +56,108 @@ let saveZoneUsagePowerOff = (deviceId) => {
   });
 };
 
-// getZoneUsageDetails() - get details of current zone
+// getZoneUsageDetails() - get details of current zone and zone usage
 //                       - Zone information:  for specified zone
-//                       - Usage Information: for all zones updates to that device
+//                       - Usage Information: for specified zone limited to last 5 entries
+//                       - Limit to the last 5 entries returned in ascending order
+// (SELECT *
+//   FROM Zone  
+//      INNER JOIN ZoneUsage ON Zone.id = ZoneUsages.ZoneId AND ZoneUsages.ZoneId = n 
+//      WHERE Zone.id = n
+//      ORDER BY startDateTime DESC
+//      LIMIT 5) ORDER BY startDateTime ASC;
 let getZoneUsageDetails = (zoneId) => {
   return db.Zone.findAll({
     include: [{
       model: db.ZoneUsage,
       where: {
         ZoneId: zoneId
-      },
+      }
+      // order: [
+      //   ["startDateTime", "DESC"]
+      // ],
+      // limit: 5
     }],
     where: {
       id: zoneId
-    }
+    },
   });
 };
 
 // summarizeZoneUsageDetails() - returns the timestamp values of ZoneUsage fields in pretty format
 //                             - calculates the duration the zone was on in hours, minutes, seconds
-//                             - records the state of the pump as on/off
 let summarizeZoneUsageDetails = (usage) => {
 
-  // local copy so we are able to modify the returned params
-  let zone = JSON.parse(JSON.stringify(usage));
+  return new Promise((resolve, reject) => {
 
-  if (zone[0] === undefined) {
-    return zone; 
-  }
+    // local copy so we are able to modify the returned params
+    let zone = JSON.parse(JSON.stringify(usage));
 
-  zone[0].power = "off";
-  for (let i=0; (i < zone[0].ZoneUsages.length); i++) {
-    let detail = zone[0].ZoneUsages[i];
-    let start = moment(detail.startDateTime).utc().local();
-    let end = 0;
-    let minutes = 0;
-    let seconds = 0;
-    let hours = 0;
+    // occasionally zones have no usage at startup
+    if (zone[0] === undefined) {
+      reject("Error calculating zone usage details");
+    }
 
-    if (detail.endDateTime !== null) {
-      end = moment(detail.endDateTime).utc().local();
-      hours = parseInt((end - start) / 1000 / 60 / 60);
-      minutes = parseInt((end - start) / 1000 / 60) - (hours*60);
-      seconds = (end - start) / 1000 - (minutes*60);
+    // Active zone, format the timestamps and set the accumulators
+    for (let i = 0;
+      (i < zone[0].ZoneUsages.length); i++) {
+      let detail = zone[0].ZoneUsages[i];
+      let start = moment(detail.startDateTime).utc().local();
+      let end = 0;
+      let minutes = 0;
+      let seconds = 0;
+      let hours = 0;
 
+      if (detail.endDateTime !== null) {
+        end = moment(detail.endDateTime).utc().local();
+        hours = parseInt((end - start) / 1000 / 60 / 60);
+        minutes = parseInt((end - start) / 1000 / 60) - (hours * 60);
+        seconds = (end - start) / 1000 - (minutes * 60);
+
+        detail.endDateTime = end.format("YYYY-MM-DD HH:mm:ss");
+      }
+
+      detail.startDateTime = start.format("YYYY-MM-DD HH:mm:ss");
       detail.hours = hours;
       detail.minutes = minutes;
       detail.seconds = seconds;
-      detail.endDateTime = end.format("YYYY-MM-DD HH:mm:ss");
-    } else if (i === (zone[0].ZoneUsages.length - 1)) { 
+    }
 
-      // most recent end time stamp is empty, pump must be on
-      zone[0].power = "on";
-    } 
+    resolve(zone);
+  });
+};
 
-    detail.startDateTime = start.format("YYYY-MM-DD HH:mm:ss");
-  }
-  
-  console.log(JSON.stringify(zone,null,2));
-  return zone;
+//  setZonePowerState(usage) - records the state of the pump as on/off based on the ZoneUsage data
+//                           - no end date on the most recent time stamp means the zone must be on
+let setZonePowerState = (usage) => {
+
+  return new Promise((resolve, reject) => {
+
+//    let zone = JSON.parse(JSON.stringify(usage));
+    let zone = usage;
+
+    // occasionally zones have no usage at startup
+    if (zone[0] === undefined) {
+      reject("Error detecting power on/off state");
+    }
+
+    if (zone[0].ZoneUsages.length > 0) {
+      let index = zone[0].ZoneUsages.length;
+      let lastUsageEvent = zone[0].ZoneUsages[index - 1];
+
+      if (lastUsageEvent.endDateTime === null) {
+        zone[0].power = "on";
+      } else {
+        zone[0].power = "off";
+      }
+    }
+
+    resolve(zone);
+  });
 };
 
 module.exports.saveZoneUsagePowerOn = saveZoneUsagePowerOn;
 module.exports.saveZoneUsagePowerOff = saveZoneUsagePowerOff;
 module.exports.getZoneUsageDetails = getZoneUsageDetails;
 module.exports.summarizeZoneUsageDetails = summarizeZoneUsageDetails;
+module.exports.setZonePowerState = setZonePowerState;
