@@ -19,41 +19,7 @@ $(document).ready(function() {
   let updateZoneInfo = (data, zoneId)=>{
 
     const maxRows = 5;
-    let usage = [];
-    let maxIdx = data[0].ZoneUsages.length < maxRows ? data[0].ZoneUsages.length : maxRows;
-    for (let i=0; (i < maxIdx); i++) {
-      let item = data[0].ZoneUsages[i];
-  
-      let entry = {};
-      entry.start = item.startDateTime;
-      entry.minutes = item.minutes;
-      entry.seconds = item.seconds;
-      usage.push(entry);
-    }
-
-    let zone = data[0];
-    let status = "";
-    if (zone.power === "off") {
-      status = "Inactive";
-    }
-    else{
-      status = "Active";
-    }
-
-    // Construct a table for the card usage details
-    // <div>
-    //   <p>Status: Active/Inactive</p>
-    //   <table>
-    //     <tr>
-    //       <th>Start</th>
-    //       <th>Duration</th>
-    //     </tr>
-    //     <tr>
-    //       <td>YYYY-MM-DD HH:mm:ss</td>
-    //       <td>mm:ss</td>
-    //     </tr>
-    //   </table>
-    // </div>
+    let status = data[0].power === "off" ? "Inactive" : "Active";
     var divHTML = $("<div>");
     var table = $("<table>");
     var thStart = $("<th>").append("Start");
@@ -67,10 +33,13 @@ $(document).ready(function() {
     table.append(trHdr);
     trHdr.append(thStart);
     trHdr.append(thDuration);
+
+    let maxIdx = data[0].ZoneUsages.length < maxRows ? data[0].ZoneUsages.length : maxRows;
     for (let i=0; (i < maxIdx); i++) {
+      let item = data[0].ZoneUsages[i];
       var tr = $("<tr>");
-      var tdStart = $("<td>").html(usage[i].start);
-      var tdDuration = $("<td>").html(usage[i].minutes + "m : " + usage[i].seconds + "s" );
+      var tdStart = $("<td>").html(item.startDateTime);
+      var tdDuration = $("<td>").html(item.minutes + "m : " + item.seconds + "s" );
       table.append(tr);
       tr.append(tdStart);
       tr.append(tdDuration);
@@ -78,6 +47,7 @@ $(document).ready(function() {
     $("#" + zoneId + "-details").html(divHTML);
 
   };
+
   
   //when we click on/off
   $(".onOffBtn").on("click", function () {
