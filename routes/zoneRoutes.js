@@ -58,7 +58,7 @@ module.exports = function (app) {
       dataCache.retrieveValueFromCache(username).then(token => {
         rachioService.turnOffZone(token, req.body.rachioDeviceId)
           .then(() => {
-            zoneDetailsRepository.saveZoneUsagePowerOff(req.body.zoneId).then(response => {
+            zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId).then(response => {
               return res.json(response);
             });
           }).catch(() => {
