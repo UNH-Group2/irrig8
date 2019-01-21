@@ -1,16 +1,18 @@
-<nav class="navbar" style="color: #ffffff;">
-  <span id="loggedUser">
-    <h3>Welcome {{user.[0].fullName}}!</h3>
-  </span>
-  <h2>Zone Management</h2>
-  <input id="logout" type="submit" class="btn bg-green" value="Logout" />
-</nav>
+<header>
+  <nav class="navbar" style="color: #ffffff;">
+    <span id="loggedUser">
+      <h5>Rachio User: {{user.[0].fullName}}</h5>
+    </span>
+    <h3 id="pageTitle">Zone Management</h3>
+    <input id="logout" type="submit" class="btn bg-green" value="Logout" />
+  </nav>
+</header>
 <br>
 <div class="container">
 
   <div class="row">
     {{#each user}}
-    <div class="col-md-4">
+    <div class="col-lg-4 col-md-6 col-sm-12">
       <div class="card mb-2">
         <h4 class="card-header text-center">{{'Devices.Zones.zoneName'}}</h4>
         <img class="card-img-top" src={{'Devices.Zones.imageURL'}} alt="Lawn Zone Image">
