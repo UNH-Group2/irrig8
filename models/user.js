@@ -33,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
 
     rachioOAuthToken: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: false,
       validate: {
         len: [1]
       }
