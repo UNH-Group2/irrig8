@@ -16,7 +16,7 @@ module.exports = function (app) {
   // CREATE - POST("/api/user") - This API is not protected, as anyone can create a new account
   app.post("/api/user/",
     function (req, res) {
-      userService.createUser(req).then(response => {
+      userService.createUser(req).then(() => {
         res.redirect("/login");
       }).catch(function (err) {
         console.log("Error returned from User.create() - could not complete insert request");
