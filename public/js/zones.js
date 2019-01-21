@@ -2,19 +2,19 @@
 $(document).ready(function() {
 
 //get usage info for single zone
-function getZoneInfo(zoneId) {
-  $.ajax
-  ({
-    headers: {
-      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
-    },
-    type: "GET",
-    url: "/api/zones/" + zoneId + "/details",
-    success: (data) =>{
-      updateZoneInfo(data, zoneId);
-    }
-  });
-}
+  function getZoneInfo(zoneId) {
+    $.ajax
+    ({
+      headers: {
+        "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+      },
+      type: "GET",
+      url: "/api/zones/" + zoneId + "/details",
+      success: (data) =>{
+        updateZoneInfo(data, zoneId);
+      }
+    });
+  }
 
   let updateZoneInfo = (data, zoneId)=>{
 
@@ -91,7 +91,6 @@ function getZoneInfo(zoneId) {
         rachioZoneId: $(this).data("rachio-zoneid"),
         zoneId: $(this).data("zoneid")
       };
-
       //run zoneOn request and change button
       turnZoneOn(zone);
       $(this).text("Turn Off");
@@ -118,33 +117,36 @@ function getZoneInfo(zoneId) {
     }
   });
 
-//turn zone on
-function turnZoneOn(zone) {
-  $.ajax("/api/zone/on", {
-    headers: {
-      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
-    },
-    type: "POST",
-    data: zone, 
-    success:getZoneInfo(zone.zoneId)
-  });
-}
+  //turn zone on
+  function turnZoneOn(zone) {
+    $.ajax("/api/zone/on", {
+      headers: {
+        "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+      },
+      type: "POST",
+      data: zone, 
+      success: (response) =>{
+        getZoneInfo(zone.zoneId);
+      }
+    });
+  }
 
-//turn zone off
-function turnZoneOff(zone) {
-  $.ajax("/api/zone/off", {
-    headers: {
-      "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
-    },
-    type: "PUT",
-    data: zone,
-    success:getZoneInfo(zone.zoneId)
-  });
-}
+  //turn zone off
+  function turnZoneOff(zone) {
+    $.ajax("/api/zone/off", {
+      headers: {
+        "Authorization": "Basic " + btoa(`${localStorage.getItem("username")}:${localStorage.getItem("password")}`)
+      },
+      type: "PUT",
+      data: zone,
+      success: (response) =>{
+        getZoneInfo(zone.zoneId);
+      }
+    });
+  }
 
   //when we click manage
   $(".detailBtn").on("click", function () {
-
     //get zone id from button and send request
     var id = $(this).data("zoneid");
     getZoneInfo(id);
@@ -152,5 +154,4 @@ function turnZoneOff(zone) {
     //display collapse for given zone
     $("#" + id).toggle();
   });
-
 });

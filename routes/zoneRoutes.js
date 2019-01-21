@@ -27,14 +27,9 @@ module.exports = function (app) {
       console.log("request parameter for zone details: ", req.params);
       zoneDetailsRepository.getZoneUsageDetails(req.params.zoneId)
         .then((dbResp) => {
-          zoneDetailsRepository.summarizeZoneUsageDetails(dbResp)
-            .then((response) =>{
-              zoneDetailsRepository.setZonePowerState(response)
-                .then((resp) =>{
-                  console.log(JSON.stringify(resp, null, 2));
-                  return res.json(resp);
-                });
-            });
+          let summarizedDetails = zoneDetailsRepository.summarizeZoneUsageDetails(dbResp);
+          let resp = zoneDetailsRepository.setZonePowerState(summarizedDetails);
+          return res.json(resp);
         });
     });
 
@@ -63,13 +58,12 @@ module.exports = function (app) {
       dataCache.retrieveValueFromCache(username).then(token => {
         rachioService.turnOffZone(token, req.body.rachioDeviceId)
           .then(() => {
-            zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId)
-              .then(resp => {
-                return res.json(resp);
-              }).catch(() => {
-                console.log("power off db error");
-                return res.status(500).end();
-              });
+            zoneDetailsRepository.saveZoneUsagePowerOff(req.body.zoneId).then(response => {
+              return res.json(response);
+            });
+          }).catch(() => {
+            console.log("power off db error");
+            return res.status(500).end();
           });
       });
     });
