@@ -104,7 +104,28 @@ var turnOffZone = function (token, deviceId) {
     });
 };
 
+let getAccessToken = (accessCode) => {
+  var options = {
+    uri: `https://api.rach.io/1/oauth/token_2_0?client_secret=${process.env.RACHIO_CLIENT_SECRET}&grant_type=authorization_code&code=${accessCode}&client_id=${process.env.RACHIO_CLIENT_ID}`,
+    method: "POST",
+    headers: {
+      "User-Agent": "Request-Promise",
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    json: true
+  };
+
+  return rp.post(options)
+    .then((resp) => {
+      return resp;
+    })
+    .catch((err) => { 
+      return err;
+    });
+};
+
 module.exports.getUserId = getUserId;
 module.exports.getUserInfo = getUserInfo;
 module.exports.turnOnZone = turnOnZone;
 module.exports.turnOffZone = turnOffZone;
+module.exports.getAccessToken = getAccessToken;

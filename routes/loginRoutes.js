@@ -1,4 +1,6 @@
 var passport = require("passport");
+var userService = require("../services/userService");
+var rachioService = require("../services/rachioService");
 
 module.exports = function (app) {
 
@@ -7,11 +9,37 @@ module.exports = function (app) {
   //--------------------------
 
   //--------------------
-  // GET ("/login") - does nothing but redirect them to the actual login page
+  // GET ("/login") - Rachio will redirect to this endpoint after authenticating user
   app.get("/login",
     function (req, res) {
-      console.log("called endpoint - get /login, send them to login page (for post)");
-      res.render("index");
+      if(typeof req.query.code === "undefined") {
+        res.render("index");
+      }
+      else{
+        // the redirect from Rachio should go to a different endpoint 
+        // (i.e. not GET /login) currently this endpoint is dual purpose, which isn't good.
+        console.log("This is a redirect from Rachio");
+
+        rachioService.getAccessToken(req.query.code).then(response => {
+          let accessToken = response.access_token;
+          let refreshToken = response.refresh_token;
+          let expirationTime = response.expires_in;
+
+          let request = {
+            body: {
+              rachioOAuthToken: accessToken,
+              rachioRefreshToken: refreshToken,
+              rachioTokenExpirationDate: expirationTime,
+              password: "rachioAuthenticatedUser",
+              isRachioAuthenticatedUser: true
+            }
+          };
+
+          userService.createUser(request).then(response => {
+            res.redirect(`/zones/${response.username}`);
+          });
+        });
+      }
     });
 
   //--------------------
@@ -24,6 +52,14 @@ module.exports = function (app) {
       }),
     (req, res) =>{
       res.redirect(`/zones/${req.body.username}`);
+    });
+
+  app.post("/login/rachio",
+    function (req, res) {
+      rachioService.getAccessToken()
+        .then(() => {
+          res.redirect(`https://app.rach.io/oauth?clientId=${process.env.RACHIO_CLIENT_ID}`);
+        });
     });
 
   //--------------------

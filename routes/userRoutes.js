@@ -1,8 +1,7 @@
 var db = require("../models");
-var rachioService = require("../services/rachioService");
-var userRepository = require("../repositories/userRepository");
+var userService = require("../services/userService");
 var passport = require("passport");
-var dataCache = require("../utils/dataCache");
+
 
 module.exports = function (app) {
   // --------------------------------------------------------------------------
@@ -17,24 +16,13 @@ module.exports = function (app) {
   // CREATE - POST("/api/user") - This API is not protected, as anyone can create a new account
   app.post("/api/user/",
     function (req, res) {
-      rachioService.getUserId(req.body.rachioOAuthToken)
-        .then((resp) => {
-          rachioService.getUserInfo(req.body.rachioOAuthToken, resp.id)
-            .then((resp) => {
-              userRepository.saveUser(req.body.username, req.body.password, req.body.rachioOAuthToken, resp)
-                .then((resp) => {
-                  console.log("post /api/user success - id " + resp.id + " added to User table ");
-                  dataCache.saveToCache(req.body.username, req.body.rachioOAuthToken, () => {  
-                    console.log("OAuth Token saved to cache");
-                    res.redirect("/login");
-                  });
-                }).catch(function (err) {
-                  console.log("Error returned from User.create() - could not complete insert request");
-                  console.log(err);
-                  return res.status(500).end();
-                });
-            });
-        });
+      userService.createUser(req).then(() => {
+        res.redirect("/login");
+      }).catch(function (err) {
+        console.log("Error returned from User.create() - could not complete insert request");
+        console.log(err);
+        return res.status(500).end();
+      });
     });
 
   //--------------------
