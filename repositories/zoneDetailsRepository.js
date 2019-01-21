@@ -29,21 +29,30 @@ let saveZoneUsagePowerOn = (zoneId) => {
 //          zone.id = zoneusage.ZoneId and 
 //          Zoneusage.endDateTime = "1970-01-01 00:00:00";  (no date)
 
-let saveZoneUsagePowerOff = (zoneId) => {
+let saveZoneUsagePowerOff = (deviceId) => {
+
   var localTime = moment().format("YYYY-MM-DD HH:mm:ss");
-  return db.ZoneUsage.update(
-    {
-      endDateTime: localTime
-    },
-    {
-      returning: true,
-      where:
-      {
-        ZoneId: zoneId, 
-        endDateTime: null
+
+  return db.ZoneUsage.update({
+    endDateTime: localTime
+  }, {
+    raw: true,
+    include: [{
+      model: db.Zone,
+      include: [{
+        model: db.Device,
+        where: {
+          id: deviceId
+        }
+      }],
+      where: {
+        id: db.ZoneUsage.ZoneId
       }
+    }],
+    where: {
+      endDateTime: null
     }
-  );
+  });
 };
 
 // getZoneUsageDetails() - get details of current zone and zone usage
