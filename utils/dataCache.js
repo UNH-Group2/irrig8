@@ -4,7 +4,6 @@ const {promisify} = require("util");
 const getAsync = promisify(client.get).bind(client);
 
 let saveToCache = (key, value, cb)=>{
-  console.log(key, value);
   client.set(key, value, cb);
 };
 

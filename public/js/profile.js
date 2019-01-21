@@ -9,7 +9,10 @@ $(document).ready(function () {
 });
 
 $("#login").on("click", function () {
-  console.log("setting localStorage");
   localStorage.setItem("username", $("#username").val());
   localStorage.setItem("password", $("#password").val());
+});
+
+$("#login-rachio").on("click", () => {
+  $("#login-form").attr("action", "/login/rachio").submit();
 });
