@@ -44,7 +44,10 @@ $(document).ready(function() {
       tr.append(tdStart);
       tr.append(tdDuration);
     }
+
+    $("#" + zoneId + "-details").hide();
     $("#" + zoneId + "-details").html(divHTML);
+    $("#" + zoneId + "-details").show();
 
   };
 
@@ -95,7 +98,7 @@ $(document).ready(function() {
       },
       type: "POST",
       data: zone, 
-      success: (response) =>{
+      success: () =>{
         getZoneInfo(zone.zoneId);
       }
     });
@@ -109,8 +112,9 @@ $(document).ready(function() {
       },
       type: "PUT",
       data: zone,
-      success: (response) =>{
-        getZoneInfo(zone.zoneId);
+      success: () =>{
+        // all zones power off, update their displays
+        $(".onOffBtn").trigger("powerOffRefresh");
       }
     });
   }
@@ -124,4 +128,16 @@ $(document).ready(function() {
     //display collapse for given zone
     $("#" + id).toggle();
   });
+
+  // If one zone powers off, all zones should now be refreshed to off too
+  $(".onOffBtn").on("powerOffRefresh", function () {
+    let id = $(this).data("zoneid");
+    console.log("refreshing card for zone: ", +id);
+    $(this).text("Turn On");
+    $(this).removeClass("btn-danger");
+    $(this).addClass("btn-success");
+    $(this).data("isrunning", false);
+    getZoneInfo(id);
+  });
+
 });
