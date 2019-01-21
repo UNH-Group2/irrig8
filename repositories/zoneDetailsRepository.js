@@ -29,30 +29,21 @@ let saveZoneUsagePowerOn = (zoneId) => {
 //          zone.id = zoneusage.ZoneId and 
 //          Zoneusage.endDateTime = "1970-01-01 00:00:00";  (no date)
 
-let saveZoneUsagePowerOff = (deviceId) => {
-
+let saveZoneUsagePowerOff = (zoneId) => {
   var localTime = moment().format("YYYY-MM-DD HH:mm:ss");
-
-  return db.ZoneUsage.update({
-    endDateTime: localTime
-  }, {
-    raw: true,
-    include: [{
-      model: db.Zone,
-      include: [{
-        model: db.Device,
-        where: {
-          id: deviceId
-        }
-      }],
-      where: {
-        id: db.ZoneUsage.ZoneId
+  return db.ZoneUsage.update(
+    {
+      endDateTime: localTime
+    },
+    {
+      returning: true,
+      where:
+      {
+        ZoneId: zoneId, 
+        endDateTime: null
       }
-    }],
-    where: {
-      endDateTime: null
     }
-  });
+  );
 };
 
 // getZoneUsageDetails() - get details of current zone and zone usage
@@ -86,71 +77,66 @@ let getZoneUsageDetails = (zoneId) => {
 // summarizeZoneUsageDetails() - returns the timestamp values of ZoneUsage fields in pretty format
 //                             - calculates the duration the zone was on in hours, minutes, seconds
 let summarizeZoneUsageDetails = (usage) => {
+  // local copy so we are able to modify the returned params
 
-  return new Promise((resolve, reject) => {
+  let zone = JSON.parse(JSON.stringify(usage));
 
-    // local copy so we are able to modify the returned params
-    let zone = JSON.parse(JSON.stringify(usage));
 
-    // occasionally zones have no usage at startup
-    if (zone[0] === undefined) {
-      reject("Error calculating zone usage details");
+
+  // occasionally zones have no usage at startup
+  if (zone[0] === undefined) {
+    console.log(zone);
+  }
+
+  // Active zone, format the timestamps and set the accumulators
+  for (let i = 0; (i < zone[0].ZoneUsages.length); i++) {
+    let detail = zone[0].ZoneUsages[i];
+    let start = moment(detail.startDateTime).utc().local();
+    let end = 0;
+    let minutes = 0;
+    let seconds = 0;
+    let hours = 0;
+
+    if (detail.endDateTime !== null) {
+      end = moment(detail.endDateTime).utc().local();
+      hours = parseInt((end - start) / 1000 / 60 / 60);
+      minutes = parseInt((end - start) / 1000 / 60) - (hours * 60);
+      seconds = (end - start) / 1000 - (minutes * 60);
+
+      detail.endDateTime = end.format("YYYY-MM-DD HH:mm:ss");
     }
 
-    // Active zone, format the timestamps and set the accumulators
-    for (let i = 0;
-      (i < zone[0].ZoneUsages.length); i++) {
-      let detail = zone[0].ZoneUsages[i];
-      let start = moment(detail.startDateTime).utc().local();
-      let end = 0;
-      let minutes = 0;
-      let seconds = 0;
-      let hours = 0;
+    detail.startDateTime = start.format("YYYY-MM-DD HH:mm:ss");
+    detail.hours = hours;
+    detail.minutes = minutes;
+    detail.seconds = seconds;
+  }
 
-      if (detail.endDateTime !== null) {
-        end = moment(detail.endDateTime).utc().local();
-        hours = parseInt((end - start) / 1000 / 60 / 60);
-        minutes = parseInt((end - start) / 1000 / 60) - (hours * 60);
-        seconds = (end - start) / 1000 - (minutes * 60);
-
-        detail.endDateTime = end.format("YYYY-MM-DD HH:mm:ss");
-      }
-
-      detail.startDateTime = start.format("YYYY-MM-DD HH:mm:ss");
-      detail.hours = hours;
-      detail.minutes = minutes;
-      detail.seconds = seconds;
-    }
-
-    resolve(zone);
-  });
+  return zone;
 };
 
 //  setZonePowerState(usage) - records the state of the pump as on/off based on the ZoneUsage data
 //                           - no end date on the most recent time stamp means the zone must be on
 let setZonePowerState = (usage) => {
 
-  return new Promise((resolve, reject) => {
+  // local copy so we are able to modify the returned params
+  let zone = JSON.parse(JSON.stringify(usage));
 
-    // local copy so we are able to modify the returned params
-    let zone = JSON.parse(JSON.stringify(usage));
+  // occasionally zones have no usage at startup
+  if (zone[0] === undefined) {
+    reject("Error detecting power on/off state");
+  }
 
-    // occasionally zones have no usage at startup
-    if (zone[0] === undefined) {
-      reject("Error detecting power on/off state");
+  zone[0].power = "off";
+  if (zone[0].ZoneUsages.length > 0) {
+    let lastUsageEvent = zone[0].ZoneUsages[0];
+
+    if (lastUsageEvent.endDateTime === null) {
+      zone[0].power = "on";
     }
+  }
 
-    zone[0].power = "off";
-    if (zone[0].ZoneUsages.length > 0) {
-      let lastUsageEvent = zone[0].ZoneUsages[0];
-
-      if (lastUsageEvent.endDateTime === null) {
-        zone[0].power = "on";
-      }
-    }
-
-    resolve(zone);
-  });
+  return zone;
 };
 
 module.exports.saveZoneUsagePowerOn = saveZoneUsagePowerOn;
