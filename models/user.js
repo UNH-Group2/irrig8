@@ -47,7 +47,7 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
 
-    rachioTokenExpiration: {
+    rachioTokenExpirationDate: {
       type: DataTypes.DATE,
       allowNull: true,
       validate: {
