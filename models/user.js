@@ -17,6 +17,7 @@ module.exports = function (sequelize, DataTypes) {
     userName: {
       type: DataTypes.STRING(50),
       allowNull: false,
+      unique: true,
       validate: {
         len: [1]
       }
@@ -32,6 +33,22 @@ module.exports = function (sequelize, DataTypes) {
 
     rachioOAuthToken: {
       type: DataTypes.STRING(255),
+      allowNull: false,
+      validate: {
+        len: [1]
+      }
+    },
+
+    rachioRefreshToken: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      validate: {
+        len: [1]
+      }
+    },
+
+    rachioTokenExpiration: {
+      type: DataTypes.DATE,
       allowNull: false,
       validate: {
         len: [1]
