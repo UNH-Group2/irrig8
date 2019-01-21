@@ -12,7 +12,7 @@ let createUser = (req) => {
           userRepository.saveUser(username, req.body.password, req.body.rachioOAuthToken, req.body.rachioRefreshToken, req.body.rachioTokenExpirationDate, resp)
             .then((resp) => {
               console.log("post /api/user success - id " + resp.id + " added to User table ");
-              dataCache.saveToCache(username, req.body.rachioOAuthToken, (response) => {  
+              dataCache.saveToCache(username, req.body.rachioOAuthToken, () => {  
                 console.log("OAuth Token saved to cache");
                 resolve({username: username});
               });

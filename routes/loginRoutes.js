@@ -57,7 +57,7 @@ module.exports = function (app) {
   app.post("/login/rachio",
     function (req, res) {
       rachioService.getAccessToken()
-        .then((resp) => {
+        .then(() => {
           res.redirect(`https://app.rach.io/oauth?clientId=${process.env.RACHIO_CLIENT_ID}`);
         });
     });
