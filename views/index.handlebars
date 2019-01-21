@@ -11,6 +11,7 @@
       </div>
       <div class="col-lg-6 no-background ">
         <h1>Welcome to Irrig8</h1>
+<<<<<<< Updated upstream
         <p>Rachio Smart Sprinkler Controllers provide a dual band Wi-Fi enabled solution to manage sprinkler systems.
           Irrig8 extends those capabilities by providing seamless integration to manage zones individually and
           keep historical tracking of zone activity</p>
@@ -18,6 +19,12 @@
           <span><a href="https://www.rachio.com/">Rachio.com</a></span> to see a product demonstration and sign-up
           for an account</p>
         <form action="/login" method="post">
+=======
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident consequuntur vero placeat nam impedit
+          expedita quam accusantium voluptate, suscipit adipisci quaerat molestiae optio assumenda tempore laboriosam
+          veritatis facilis laudantium rem?</p>
+        <form id="login-form" action="/login" method="post">
+>>>>>>> Stashed changes
           <div>
             <label>Username:</label>
             <input id="username" class="form-control" type="user" name="username" placeholder="Your Login Name" />
@@ -29,6 +36,10 @@
           <div class="text-right top-margin">
             <input id="login" type="submit" class="btn bg-green float-left" value="Log In" />
           </div>
+          <div class="text-right top-margin">
+            <input id="login-rachio" type="submit" class="btn bg-green float-left ml-5" value="Log In With Rachio" />
+          </div>
+           <input type="hidden" id="rachioOAuthToken" name="rachioOAuthToken">
         </form>
         <a href="/register" class="float-right text-green" id="homeNewUser">New User?</a>
         <div></div>

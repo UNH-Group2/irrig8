@@ -1,11 +1,13 @@
 const db = require("../models");
 const securityUtils = require("../utils/securityUtils");
 
-let saveUser = (userName, password, token, userInfo) => {
+let saveUser = (userName, password, token, refreshToken, tokenEpirationDate, userInfo) => {
   let user = {
     userName: userName,
     password: securityUtils.hashData(password),
     rachioOAuthToken: token,
+    rachioRefreshToken: refreshToken,
+    // rachioTokenExpirationDate: tokenEpirationDate,
     rachioUserId: userInfo.id,
     email: userInfo.email,
     fullName: userInfo.fullName,
