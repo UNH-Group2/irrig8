@@ -15,7 +15,8 @@ let getZones = (userName) => {
           }
         ]
       }
-    ]
+    ],
+    order: [[ db.Device, db.Zone, "zoneNumber"]]
   });
 };
 
