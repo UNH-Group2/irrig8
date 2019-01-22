@@ -44,6 +44,8 @@ let createUser = (req) => {
 let createRachioUser = (req) => {
   return new Promise((resolve, reject) => {rachioService.getUserId(req.body.rachioOAuthToken)
     .then((resp) => {
+      console.log("req.body.rachioOAuthToken: ", req.body.rachioOAuthToken);
+      console.log("resp.id: ", resp.id);
       rachioService.getUserInfo(req.body.rachioOAuthToken, resp.id)
         .then((resp) => {
           let username = resp.username;
