@@ -5,5 +5,5 @@ $(function() {
   localStorage.setItem("username", username);
   localStorage.setItem("password", password);
 
-  $("#hidden-form").attr("action", `/login/${username}`).submit();
+  $("#hidden-form").attr("action", "/login").submit();
 });
