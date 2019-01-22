@@ -10,6 +10,3 @@ function validatePassword() {
 }
 password.onchange = validatePassword;
 confirmPassword.onkeyup = validatePassword;
-
-
-
