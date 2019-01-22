@@ -76,6 +76,7 @@ $(document).ready(function() {
     //save data for request  
     var zone = {
       rachioZoneId: $(this).data("rachio-zoneid"),
+      rachioDeviceId: $(this).data("rachio-deviceid"),
       deviceId: $(this).data("deviceid"),
       zoneId: $(this).data("zoneid")
     };

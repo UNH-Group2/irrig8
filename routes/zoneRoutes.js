@@ -39,7 +39,9 @@ module.exports = function (app) {
     function (req, res) {
       let username = securityUtils.getUserNameFromHeader(req.headers);
       dataCache.retrieveValueFromCache(username).then(token =>{
-
+        console.log("***********************************************");
+        console.log("(Before Power On) Turning off zones for device ", req.body.rachioDeviceId);
+        console.log("***********************************************");
         rachioService.turnOffZone(token, req.body.rachioDeviceId)
           .then(() => {
             zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId).then(() => {
@@ -64,6 +66,9 @@ module.exports = function (app) {
     function (req, res) {
       let username = securityUtils.getUserNameFromHeader(req.headers);
       dataCache.retrieveValueFromCache(username).then(token => {
+        console.log("***********************************************");
+        console.log("(ZONE OFF) Turning off zones for device ", req.body.rachioDeviceId);
+        console.log("***********************************************");
         rachioService.turnOffZone(token, req.body.rachioDeviceId)
           .then(() => {
             zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId).then(response => {

@@ -23,14 +23,19 @@ let saveUser = (userName, password, token, refreshToken, tokenEpirationDate, use
       };
     });
   } else {
-    device.name = "";
+    device.name = "No Devices";
     device.timeZone = "";
     device.serialNumber = "";
     device.macAddress = "";
-    device.locationLatitude = "";
-    device.locationLongitude = "";
-    device.rachioDeviceId = "";
-    device.Zones = [];
+    device.locationLatitude = 0.0;
+    device.locationLongitude = 0.0;
+    device.rachioDeviceId = "1";
+    device.Zones = [{
+      zoneName: "No Zones Available",
+      zoneNumber: "1",
+      rachioZoneId: "1",
+      imageURL: "https://prod-media-photo.rach.io/138e03c6-d055-4acc-bf4b-356baeca427f"
+    }];
   }
 
   let user = {
