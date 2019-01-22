@@ -33,20 +33,28 @@ module.exports = function (app) {
         });
     });
 
+  // zone on logic - only one zone may be active at any time, update the history accordingly
   app.post("/api/zone/on",
     passport.authenticate("basic", {session: false}),
     function (req, res) {
       let username = securityUtils.getUserNameFromHeader(req.headers);
       dataCache.retrieveValueFromCache(username).then(token =>{
-        rachioService.turnOnZone(token, req.body.rachioZoneId)
+
+        rachioService.turnOffZone(token, req.body.rachioDeviceId)
           .then(() => {
-            zoneDetailsRepository.saveZoneUsagePowerOn(req.body.zoneId)
-              .then((resp) => {
-                return res.json(resp);
-              }).catch(() => {
-                console.log("power on db error");
-                return res.status(500).end();
-              });
+            zoneDetailsRepository.saveZoneUsagePowerOff(req.body.deviceId).then(() => {
+
+              rachioService.turnOnZone(token, req.body.rachioZoneId)
+                .then(() => {
+                  zoneDetailsRepository.saveZoneUsagePowerOn(req.body.zoneId)
+                    .then((resp) => {
+                      return res.json(resp);
+                    }).catch(() => {
+                      console.log("power on db error");
+                      return res.status(500).end();
+                    });
+                });
+            });
           });
       });
     });

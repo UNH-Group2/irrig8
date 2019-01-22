@@ -16,7 +16,9 @@ $(document).ready(function() {
     });
   }
 
-  let updateZoneInfo = (data, zoneId)=>{
+  let updateZoneInfo = (data, zoneId) => {
+
+    updateOnOffButtonState(data, zoneId); 
 
     const maxRows = 5;
     let status = data[0].power === "off" ? "Inactive" : "Active";
@@ -26,6 +28,7 @@ $(document).ready(function() {
     var thDuration = $("<th>").append("Duration (min:sec)");
     var trHdr = $("<tr>");
     var pStatus = $("<p>").text("Status: " + status);
+
     pStatus.addClass("usage-status-lbl");
     table.addClass("usage-detail-tbl");
     divHTML.append(pStatus);
@@ -48,45 +51,44 @@ $(document).ready(function() {
     $("#" + zoneId + "-details").hide();
     $("#" + zoneId + "-details").html(divHTML);
     $("#" + zoneId + "-details").show();
-
   };
 
+  function updateOnOffButtonState(data, zoneId) {
+
+    let onOffbtn = $("#" + zoneId + "-onOffBtn");
+
+    if (data[0].power === "on") {
+      onOffbtn.text("Turn Off");
+      onOffbtn.removeClass("btn-success");
+      onOffbtn.addClass("btn-danger");
+      onOffbtn.data("isrunning", true);
+    } else {
+      onOffbtn.text("Turn On");
+      onOffbtn.removeClass("btn-danger");
+      onOffbtn.addClass("btn-success");
+      onOffbtn.data("isrunning", false);
+    }
+  }
   
   //when we click on/off
   $(".onOffBtn").on("click", function () {
 
-    //if off, turn on
+    //save data for request  
+    var zone = {
+      rachioZoneId: $(this).data("rachio-zoneid"),
+      deviceId: $(this).data("deviceid"),
+      zoneId: $(this).data("zoneid")
+    };
+
+      //if off, turn on
     let isRunning = $(this).data("isrunning");
     if (!isRunning) {
 
-      //save data for request  
-      var zone = {
-        rachioZoneId: $(this).data("rachio-zoneid"),
-        zoneId: $(this).data("zoneid")
-      };
-      //run zoneOn request and change button
       turnZoneOn(zone);
-      $(this).text("Turn Off");
-      $(this).removeClass("btn-success");
-      $(this).addClass("btn-danger");
-      $(this).data("isrunning", true);
-
     } else {
+
       //is on, turn off
-
-      //save data for request
-      var zone = {
-        rachioDeviceId: $(this).data("rachio-deviceid"),
-        deviceId: $(this).data("deviceid"),
-        zoneId: $(this).data("zoneid")
-      };
-
-      //run zoneOff request and change button
       turnZoneOff(zone);
-      $(this).text("Turn On");
-      $(this).removeClass("btn-danger");
-      $(this).addClass("btn-success");
-      $(this).data("isrunning", false);
     }
   });
 
@@ -99,7 +101,7 @@ $(document).ready(function() {
       type: "POST",
       data: zone, 
       success: () =>{
-        getZoneInfo(zone.zoneId);
+        $(".onOffBtn").trigger("powerStateRefresh");
       }
     });
   }
@@ -113,8 +115,7 @@ $(document).ready(function() {
       type: "PUT",
       data: zone,
       success: () =>{
-        // all zones power off, update their displays
-        $(".onOffBtn").trigger("powerOffRefresh");
+        $(".onOffBtn").trigger("powerStateRefresh");
       }
     });
   }
@@ -130,13 +131,8 @@ $(document).ready(function() {
   });
 
   // If one zone powers off, all zones should now be refreshed to off too
-  $(".onOffBtn").on("powerOffRefresh", function () {
+  $(".onOffBtn").on("powerStateRefresh", function () {
     let id = $(this).data("zoneid");
-    console.log("refreshing card for zone: ", +id);
-    $(this).text("Turn On");
-    $(this).removeClass("btn-danger");
-    $(this).addClass("btn-success");
-    $(this).data("isrunning", false);
     getZoneInfo(id);
   });
 
