@@ -47,9 +47,16 @@ header {
 }
 
 .card-header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 80px;
-  }
+}
   
-  .card-img-top{
+.card-img-top{
   max-height: 195.797px;
-  }
+}
+  
+.zoneNum{
+  left:40%;
+}
