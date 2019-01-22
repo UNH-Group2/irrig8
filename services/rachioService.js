@@ -115,6 +115,7 @@ let getAccessToken = (accessCode) => {
     json: true
   };
 
+  console.log(options.uri);
   return rp.post(options)
     .then((resp) => {
       return resp;

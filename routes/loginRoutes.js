@@ -25,6 +25,8 @@ module.exports = function (app) {
           let refreshToken = response.refresh_token;
           let expirationTime = response.expires_in;
 
+          console.log(accessToken, refreshToken);
+
           let request = {
             body: {
               rachioOAuthToken: accessToken,
