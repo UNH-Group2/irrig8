@@ -17,11 +17,17 @@ module.exports = function (app) {
   app.post("/api/user/",
     function (req, res) {
       userService.createUser(req).then(() => {
-        res.redirect("/login");
+        res.status("201").end();
       }).catch(function (err) {
         console.log("Error returned from User.create() - could not complete insert request");
-        console.log(err);
-        return res.status(500).end();
+        if(err.errorCode === "USER_EXISTS"){
+          console.log(err);
+          res.status(409).send(err);
+        }
+        else{
+          console.log("500 error");
+          res.status(500);
+        }
       });
     });
 

@@ -61,7 +61,25 @@ let saveUser = (userName, password, token, refreshToken, tokenEpirationDate, use
   });
 };
 
-let getOAuthTokens = () => {
+let doesUserExist = (username) => {
+  return db.User.count({ where: { userName: username } })
+    .then(count => {
+      if (count > 0) {
+        return true;
+      }
+      return false;
+    });
+};
+
+let getUser = (username) => {
+  return db.User.findOne({
+    where: {
+      userName: username
+    }
+  });
+};
+
+let getOAuthTokens = () =>{
   return db.User.findAll({
     raw: true,
     attributes: ["userName", "rachioOAuthToken"]
@@ -70,3 +88,5 @@ let getOAuthTokens = () => {
 
 module.exports.saveUser = saveUser;
 module.exports.getOAuthTokens = getOAuthTokens;
+module.exports.getUser = getUser;
+module.exports.doesUserExist = doesUserExist;
