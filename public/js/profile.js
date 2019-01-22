@@ -16,3 +16,24 @@ $("#login").on("click", function () {
 $("#login-rachio").on("click", () => {
   $("#login-form").attr("action", "/login/rachio").submit();
 });
+
+$("#register").on("click", function () {
+
+  let userData = {
+    username: $("#username").val(),
+    password: $("#password").val(),
+    rachioOAuthToken: $("#rachioOAuthToken").val()
+  };
+
+  $.ajax("/api/user", {
+    type: "POST",
+    data: userData, 
+    success: (response) =>{
+      console.log(response);
+      window.location.href = "/login";
+    },
+    error: (response) =>{
+      $("#errorMessage").text(response.responseJSON.errorMessage);
+    }
+  });
+});
