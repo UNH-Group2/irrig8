@@ -45,3 +45,11 @@ header {
   border-bottom-width: 1px;
   font-family: 'Georgia', Times, Times New Roman, serif;
 }
+
+.card-header{
+  height: 80px;
+  }
+  
+  .card-img-top{
+  max-height: 195.797px;
+  }
