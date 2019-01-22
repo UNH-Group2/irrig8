@@ -38,7 +38,15 @@ module.exports = function (app) {
           };
 
           userService.createRachioUser(request).then(response => {
-            res.redirect(`/zones/${response.username}`);
+            
+            // need to redirect to a hidden page with the credentials 
+            // as they are needed for Basic Auth
+            res.render("hidden", {
+              user: {
+                username: response.username,
+                password: "rachioAuthenticatedUser"
+              }
+            });
           });
         });
       }

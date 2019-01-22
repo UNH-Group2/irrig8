@@ -9,7 +9,7 @@ module.exports = function (app) {
 
   // Load zone page
   app.get("/zones/:username",
-    //require("connect-ensure-login").ensureLoggedIn(),
+    require("connect-ensure-login").ensureLoggedIn(),
     function (req, res) {
       zoneRepository.getZones(req.params.username).then((resp) => {
         res.render("zones", {
