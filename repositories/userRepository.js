@@ -4,7 +4,7 @@ const securityUtils = require("../utils/securityUtils");
 let saveUser = (userName, password, token, refreshToken, tokenEpirationDate, userInfo) => {
 
   let device = {};
-  if (userInfo.devices[0] !== undefined) {
+  if (typeof userInfo.devices[0] !== "undefined") {
     device.name = userInfo.devices[0].name;
     device.timeZone = userInfo.devices[0].timeZone;
     device.serialNumber = userInfo.devices[0].serialNumber;
@@ -51,9 +51,9 @@ let saveUser = (userName, password, token, refreshToken, tokenEpirationDate, use
       timeZone: device.timeZone,
       serialNumber: device.serialNumber,
       macAddress: device.macAddress,
-      locationLatitude: device.latitude,
-      locationLongitude: device.longitude,
-      rachioDeviceId: device.id,
+      locationLatitude: device.locationLatitude,
+      locationLongitude: device.locationLongitude,
+      rachioDeviceId: device.rachioDeviceId,
       Zones: device.Zones
     }]
   };
