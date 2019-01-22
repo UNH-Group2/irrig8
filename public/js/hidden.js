@@ -5,5 +5,5 @@ $(function() {
   localStorage.setItem("username", username);
   localStorage.setItem("password", password);
 
-  window.location.href = `/zones/${username}`;
+  $("#hidden-form").attr("action", `/login/${username}`).submit();
 });
