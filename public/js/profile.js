@@ -15,6 +15,7 @@ $(document).ready(function () {
   });
 });
 
+
 $("#login").on("click", function () {
   localStorage.setItem("username", $("#username").val());
   localStorage.setItem("password", $("#password").val());
