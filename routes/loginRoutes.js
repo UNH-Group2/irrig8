@@ -37,7 +37,7 @@ module.exports = function (app) {
             }
           };
 
-          userService.createUser(request).then(response => {
+          userService.createRachioUser(request).then(response => {
             res.redirect(`/zones/${response.username}`);
           });
         });
