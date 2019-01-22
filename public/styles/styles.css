@@ -57,6 +57,25 @@ nav{
   color: #eeeeee;
   
 }
+.logout{
+  z-index: -1;
+}
+@media only screen and (min-width: 768px) {
+  .navbar .navbar-nav {
+      display: inline-block;
+      float: none;
+      vertical-align: top;
+  }
+  .navbar .navbar-collapse {
+      text-align: center;
+  }
+  body{
+    min-width: 0 !important;
+  }
+  nav{
+    min-width: 0 !important;
+  }
+}
 /* start of profile page css */
 .no-background-bottom{
   background-color: #ffffff;

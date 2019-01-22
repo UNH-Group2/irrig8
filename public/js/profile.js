@@ -1,9 +1,16 @@
 var logout = $("#logout");
+var cancel = $("#cancel");
 
 $(document).ready(function () {
   logout.on("click", function (e) {
     e.preventDefault();
     localStorage.clear();
+    window.location.href = "/login";
+  });
+});
+$(document).ready(function () {
+  cancel.on("click", function (e) {
+    e.preventDefault();
     window.location.href = "/login";
   });
 });
