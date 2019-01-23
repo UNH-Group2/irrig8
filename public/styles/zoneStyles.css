@@ -5,7 +5,7 @@
 
 th, td {
   padding: 15px;
-}
+} 
 
 table {
   border-spacing: 5px;
@@ -30,7 +30,7 @@ tr:nth-child(even) {
 }
 
 #pageTitle {
-  text-align: center;
+  margin-right: 135px;
 }
 
 body {
