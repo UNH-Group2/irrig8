@@ -32,7 +32,7 @@ module.exports = function (app) {
               rachioOAuthToken: accessToken,
               rachioRefreshToken: refreshToken,
               rachioTokenExpirationDate: expirationTime,
-              password: "rachioAuthenticatedUser",
+              password: process.env.PASSWORD,
               isRachioAuthenticatedUser: true
             }
           };
@@ -44,7 +44,7 @@ module.exports = function (app) {
             res.render("hidden", {
               user: {
                 username: response.username,
-                password: "rachioAuthenticatedUser"
+                password: process.env.PASSWORD
               }
             });
           });
