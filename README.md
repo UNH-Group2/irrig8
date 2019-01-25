@@ -67,7 +67,7 @@ __Note:__  .env is added to the .gitignore file to prevent your config and passw
 
 ## Authors   
 UNH LawnDogs      
-January, 2018   
+January, 2019   
   
 ## Acknowledgements      
 Rachio.com - Sprinkler Control Systems  
